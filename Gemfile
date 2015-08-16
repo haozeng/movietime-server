@@ -33,7 +33,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'mysql2'
 gem 'paperclip', '~> 4.2'
 gem 'responders', '~> 2.0'
-
+gem 'doorkeeper'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

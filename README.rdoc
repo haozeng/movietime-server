@@ -1,28 +1,13 @@
-== README
+https://github.com/doorkeeper-gem/doorkeeper/wiki/Enable-Refresh-Token-Credentials
+https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Resource-Owner-Password-Credentials-flow
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Get client information from phone
+d = Doorkeeper::Application.last
+client_id = d.uid  => '86243cce82a8ea74e78f4d9f83dd97b701bb58542f4ab1aa859fe0b4f95075ff'
+client_secret = d.secret => 'f9d09c922b38aa021e7059b7fbe5358e1c1f84233ff0bc7f5ebb5792fce9963f'
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+# Generate auth token based on username and password
+require 'oauth2'
+client = OAuth2::Client.new('86243cce82a8ea74e78f4d9f83dd97b701bb58542f4ab1aa859fe0b4f95075ff', 'f9d09c922b38aa021e7059b7fbe5358e1c1f84233ff0bc7f5ebb5792fce9963f', site: 'http://localhost:3000')
+access_token = client.password.get_token('test@gmail.com', '12345678')
+puts access_token.token

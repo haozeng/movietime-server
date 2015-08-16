@@ -1,0 +1,1 @@
+json.(@brand, :id, :name, :price, :logo)

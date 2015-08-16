@@ -14,4 +14,13 @@ describe BrandsController do
       expect(JSON.parse(response.body)['brands'].size).to eql(3)
     end
   end
+
+  context "#show" do
+    it "return one brand in json" do
+      get :show, id: Brand.last.id, format: :json
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['name']).to eql(Brand.last.name)
+    end
+  end
 end
