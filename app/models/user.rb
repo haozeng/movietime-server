@@ -5,4 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :purchase_orders
+
+  validates :email, uniqueness: true
 end

@@ -11,7 +11,8 @@ describe RegistrationsController do
            format: :json
 
       expect(response.status).to eql(200)
-      expect(response.body).to eql('')
+      result = JSON.parse(response.body)
+      expect(result['access_token']).not_to be_nil
     end
 
     it 'should not create a user if password does not match' do
@@ -36,6 +37,15 @@ describe RegistrationsController do
       put :update, id: user, user: { password: 'abcedf', password_confirmation: 'abcedf' }
       expect(response.status).to eql(200)
       expect(user.reload.valid_password?('abcedf')).to be true
+    end
+  end
+
+  context "#oauth" do
+    it 'should be able to create a user from facebook oauth info' do
+      post :oauth, user: { uid: '1234567', email: 'test@gmail.com' }
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['access_token']).not_to be_nil
     end
   end
 end
