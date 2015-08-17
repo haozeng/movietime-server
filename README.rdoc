@@ -11,3 +11,5 @@ require 'oauth2'
 client = OAuth2::Client.new('86243cce82a8ea74e78f4d9f83dd97b701bb58542f4ab1aa859fe0b4f95075ff', 'f9d09c922b38aa021e7059b7fbe5358e1c1f84233ff0bc7f5ebb5792fce9963f', site: 'http://localhost:3000')
 access_token = client.password.get_token('test@gmail.com', '12345678')
 puts access_token.token
+
+http header: 'HTTP_AUTHORIZATION' => "bearer #{token}"
