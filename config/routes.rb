@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :registrations, only: [:create, :update] do
     post 'oauth', on: :collection
   end
+  resources :payment_profiles, only: [:create, :index, :show]
 end

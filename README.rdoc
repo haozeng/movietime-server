@@ -12,4 +12,6 @@ client = OAuth2::Client.new('86243cce82a8ea74e78f4d9f83dd97b701bb58542f4ab1aa859
 access_token = client.password.get_token('test@gmail.com', '12345678')
 puts access_token.token
 
-http header: 'HTTP_AUTHORIZATION' => "bearer #{token}"
+http header: 'Authorization' => "bearer #{token}"
+
+curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0db4b9e10a6e06bf" -X GET localhost:3000/purchase_orders
