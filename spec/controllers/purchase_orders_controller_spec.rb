@@ -14,14 +14,32 @@ describe PurchaseOrdersController do
   context "#index" do
     before do
       purchase_order = create :purchase_order, user: user
-      create_list :code, 3, purchase_order: purchase_order
+      codes = create_list :code, 4, purchase_order: purchase_order
+      @one = codes[0]
+
+      purchase_order_two = create :purchase_order, user: user, created_at: 1.day.ago
+      @two = create :code, purchase_order: purchase_order_two
     end
 
     it 'should return a list of purchase_orders for user' do
       get :index, format: :json
       expect(response.status).to eql(200)
       result = JSON.parse(response.body)
-      expect(result['purchase_orders'].count).to eql(3)
+      expect(result['purchase_orders'].count).to eql(5)
+    end
+
+    context "used and unused sorting" do
+      before do
+        @one.mark_used!
+      end
+
+      it 'should return codes in the order of unused first, and then used' do
+        get :index, format: :json
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)['purchase_orders']
+        expect(result[-1]['code']).to eql(@one.code)
+        expect(result[-2]['code']).to eql(@two.code)
+      end
     end
   end
 

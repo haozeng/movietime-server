@@ -20,7 +20,6 @@ curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0
 
 ToDoList:
 
-purchase order index -> return in order
 charles read from localhost
 authorization level for users too
 
@@ -30,3 +29,6 @@ regal
 cinemark
 
 design, terms and conditions
+
+
+purchase order index paginations
