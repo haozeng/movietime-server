@@ -15,3 +15,18 @@ puts access_token.token
 http header: 'Authorization' => "bearer #{token}"
 
 curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0db4b9e10a6e06bf" -X GET localhost:3000/purchase_orders
+
+
+
+ToDoList:
+
+seed data
+used code
+purchase order index -> return in order
+mark read api
+charles read from localhost
+
+images needs to fit high resolution
+amc
+regal
+cinemark
