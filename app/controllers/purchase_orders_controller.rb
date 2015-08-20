@@ -4,20 +4,7 @@ class PurchaseOrdersController < ApplicationController
   def index
     @purchase_orders = current_user.purchase_orders
 
-    # respond_with @purchase_orders.includes(:code)
-
-    result = {"purchase_orders"=>
-    [{"brand"=>"cinemark", "created_at"=>"2015-08-20T04:18:36.000Z", "code"=>"4822938891"},
-     {"brand"=>"cinemark", "created_at"=>"2015-08-20T04:18:36.000Z", "code"=>"7201237568"},
-     {"brand"=>"cinemark", "created_at"=>"2015-08-20T04:18:36.000Z", "code"=>"3507169436"}]}
-
-    render :json => result
-  end
-
-  def show
-    @code = Code.find(params[:id])
-
-    respond_with @code
+    respond_with @purchase_orders.includes(:code)
   end
 
   def create
