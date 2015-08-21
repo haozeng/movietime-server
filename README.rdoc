@@ -27,6 +27,3 @@ amc
 regal
 cinemark
 design, terms and conditions
-
-
-purchase order index paginations

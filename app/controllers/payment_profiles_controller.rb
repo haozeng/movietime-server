@@ -22,6 +22,13 @@ class PaymentProfilesController < ApplicationController
     respond_with @payment_profiles
   end
 
+  def destroy
+    @payment_profile = PaymentProfile.find(params[:id])
+    @payment_profile.destroy
+
+    head 204
+  end
+
   private
 
   def payment_profile_params

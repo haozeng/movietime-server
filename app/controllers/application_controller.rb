@@ -1,6 +1,9 @@
 require "application_responder"
 
 class ApplicationController < ActionController::Base
+  load_and_authorize_resource
+  check_authorization
+
   self.responder = ApplicationResponder
   respond_to :json
 

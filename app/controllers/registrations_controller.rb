@@ -1,5 +1,8 @@
 class RegistrationsController < ApplicationController
-  before_action :doorkeeper_authorize!, except: [:create, :oauth]
+  skip_authorization_check only: [:create, :oauth]
+  skip_load_and_authorize_resource only: [:create, :oauth]
+
+  before_action :doorkeeper_authorize!, only: [:update]
 
   def create
     user = User.new(sign_up_params)

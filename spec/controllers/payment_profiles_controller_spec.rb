@@ -9,6 +9,7 @@ describe PaymentProfilesController do
   before do
     allow(controller).to receive(:doorkeeper_token).and_return(token)
     allow_any_instance_of(PaymentProfile).to receive(:create_in_stripe).and_return(true)
+    allow_any_instance_of(PaymentProfile).to receive(:destroy_in_stripe).and_return(true)
   end
 
   context "#create" do
@@ -46,6 +47,19 @@ describe PaymentProfilesController do
       expect(response.status).to eql(200)
       result = JSON.parse(response.body)
       expect(result).to include('user_id', 'id', 'brand', 'last_four_digits')
+    end
+  end
+
+  context "#destroy" do
+    before do
+      create :payment_profile, user: user, stripe_user_id: '1234'
+    end
+
+    it "should the payment_profile for this user" do
+      delete :destroy, id: PaymentProfile.last.id, format: :json
+
+      expect(response.status).to eql(204)
+      expect(user.payment_profiles.count).to eql(0)
     end
   end
 end

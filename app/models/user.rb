@@ -8,4 +8,8 @@ class User < ActiveRecord::Base
   has_many :payment_profiles
 
   validates :email, uniqueness: true
+
+  def purchase_order_ids
+    purchase_orders.pluck(:id)
+  end
 end

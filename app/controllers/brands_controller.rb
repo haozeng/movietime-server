@@ -1,4 +1,7 @@
 class BrandsController < ApplicationController
+  skip_authorization_check
+  skip_load_and_authorize_resource
+
   def index
     @brands = Brand.all
 
