@@ -2,9 +2,11 @@ class PurchaseOrdersController < ApplicationController
   before_action :doorkeeper_authorize!
 
   def index
-    @codes = Code.joins(:purchase_order => :user).
-                            where('purchase_orders.user_id = ?', current_user.id).
-                            order(:status).order('purchase_orders.created_at DESC')
+    # use params[:page] and params[:per_page] to paginate
+    @codes = paginate Code.joins(:purchase_order => :user).
+                           where('purchase_orders.user_id = ?', current_user.id).
+                           order(:status).order('purchase_orders.created_at DESC'), per_page: 20
+
     respond_with @codes
   end
 
