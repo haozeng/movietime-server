@@ -19,3 +19,10 @@ curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0
 
 
 ToDoList:
+
+
+brand images
+icons for purchase flows
+
+logo
+launch screen

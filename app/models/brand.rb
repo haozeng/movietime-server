@@ -1,5 +1,5 @@
 class Brand < ActiveRecord::Base
-  has_many :codes
+  has_many :tickets
 
   has_attached_file :logo, :styles => { :medium => '200x200' }
 

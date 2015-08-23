@@ -18,10 +18,10 @@ def ensure_payment_profile(user, payment_profile_params)
   payment_profile
 end
 
-def ensure_code(brand, code_params)
-  code = brand.codes.where(code: code_params[:code]).first || brand.codes.new
-  code.update_attributes(code_params)
-  code
+def ensure_ticket(brand, ticket_params)
+  ticket = brand.tickets.where(ticket: ticket_params[:ticket]).first || brand.tickets.new
+  ticket.update_attributes(ticket_params)
+  ticket
 end
 
 def ensure_purchase_order(user, purchase_order_params)
@@ -40,29 +40,29 @@ if Rails.env.development?
 
   payment_profile = ensure_payment_profile(user, { brand: 'MC', last_four_digits: '3212', stripe_user_id: '1' })
 
-  # Generate 5 codes for each brand
-  Code.destroy_all
+  # Generate 5 tickets for each brand
+  Ticket.destroy_all
   [amc, regal, cinemark].each do |b|
-    5.times { ensure_code(b, { code: rand.to_s[2..11] })}
+    5.times { ensure_ticket(b, { ticket: rand.to_s[2..11] })}
   end
 
   # Destroy all purchase orders and create new ones
   PurchaseOrder.destroy_all
   5.times { ensure_purchase_order(user, { price: 20 }) }
 
-  # Link Codes with purchase_orders
-  last_code_id = Code.last.id
+  # Link tickets with purchase_orders
+  last_ticket_id = ticket.last.id
   PurchaseOrder.all.each do |p|
-    code = Code.find(last_code_id)
-    code.purchase_order_id = p.id
-    code.save
-    last_code_id -= 1
+    ticket = ticket.find(last_ticket_id)
+    ticket.purchase_order_id = p.id
+    ticket.save
+    last_ticket_id -= 1
   end
 
-  Code.first(5).each do |code|
+  ticket.first(5).each do |ticket|
     p = PurchaseOrder.first
-    code.purchase_order_id = p.id
-    code.save
+    ticket.purchase_order_id = p.id
+    ticket.save
   end
 
   puts '----User count----'
@@ -71,8 +71,8 @@ if Rails.env.development?
   puts PaymentProfile.count
   puts '----Brand count----'
   puts Brand.count
-  puts '----Code count----'
-  puts Code.count
+  puts '----ticket count----'
+  puts Ticket.count
   puts '----PurchaseOrder count----'
   puts PurchaseOrder.count
 end

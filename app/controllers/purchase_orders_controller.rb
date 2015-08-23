@@ -3,11 +3,11 @@ class PurchaseOrdersController < ApplicationController
 
   def index
     # use params[:page] and params[:per_page] to paginate
-    @codes = paginate Code.joins(:purchase_order => :user).
+    @tickets = paginate Ticket.joins(:purchase_order => :user).
                            where('purchase_orders.user_id = ?', current_user.id).
                            order(:status).order('purchase_orders.created_at DESC'), per_page: 20
 
-    respond_with @codes
+    respond_with @tickets
   end
 
   def create
@@ -24,6 +24,6 @@ class PurchaseOrdersController < ApplicationController
   private
   def purchase_order_params
     params.require(:purchase_order).permit(:payment_profile_id, :price,
-                                           :number_of_codes, :brand_id)
+                                           :number_of_tickets, :brand_id)
   end
 end

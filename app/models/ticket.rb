@@ -1,4 +1,4 @@
-class Code < ActiveRecord::Base
+class Ticket < ActiveRecord::Base
   belongs_to :brand
   belongs_to :purchase_order
 

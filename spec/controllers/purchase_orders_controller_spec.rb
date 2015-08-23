@@ -14,11 +14,11 @@ describe PurchaseOrdersController do
   context "#index" do
     before do
       purchase_order = create :purchase_order, user: user
-      codes = create_list :code, 4, purchase_order: purchase_order
-      @one = codes[0]
+      tickets = create_list :ticket, 4, purchase_order: purchase_order
+      @one = tickets[0]
 
       purchase_order_two = create :purchase_order, user: user, created_at: 1.day.ago
-      @two = create :code, purchase_order: purchase_order_two
+      @two = create :ticket, purchase_order: purchase_order_two
     end
 
     it 'should return a list of purchase_orders for user' do
@@ -31,7 +31,7 @@ describe PurchaseOrdersController do
     context "pagination" do
       before do
         purchase_order = create :purchase_order, user: user
-        codes = create_list :code, 40, purchase_order: purchase_order
+        tickets = create_list :ticket, 40, purchase_order: purchase_order
       end
 
       it "should return 20 results at once" do
@@ -47,7 +47,7 @@ describe PurchaseOrdersController do
         @one.mark_used!
       end
 
-      it 'should return codes in the order of unused first, and then used' do
+      it 'should return tickets in the order of unused first, and then used' do
         get :index, format: :json
         expect(response.status).to eql(200)
         result = JSON.parse(response.body)['purchase_orders']
@@ -62,12 +62,12 @@ describe PurchaseOrdersController do
       allow(Stripe::Charge).to receive(:create).and_return(true)
     end
 
-    it 'should return one code for user' do
+    it 'should return one ticket for user' do
       post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
-                                      price: brand.price*2, number_of_codes: 2 }, format: :json
+                                      price: brand.price*2, number_of_tickets: 2 }, format: :json
       expect(response.status).to eql(200)
       expect(user.purchase_orders.count).to eql(1)
-      expect(user.purchase_orders[0].codes.count).to eql(2)
+      expect(user.purchase_orders[0].tickets.count).to eql(2)
     end
   end
 end

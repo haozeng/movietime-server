@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :payment_profiles, only: [:create, :index, :show, :destroy]
 
-  resources :codes, only: [:show] do
+  resources :tickets, only: [:show] do
     post 'mark_used', on: :member
     post 'mark_unused', on: :member
   end

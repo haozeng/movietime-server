@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CodesController do
+describe TicketsController do
   render_views
 
   let!(:user) { create :user }
@@ -15,19 +15,19 @@ describe CodesController do
   context "#mark_use" do
     before do
       purchase_order = create :purchase_order, user: user
-      @code = create :code, purchase_order: purchase_order
+      @ticket = create :ticket, purchase_order: purchase_order
     end
 
-    it 'should mark the code as used' do
-      post :mark_used, id: @code.id
+    it 'should mark the ticket as used' do
+      post :mark_used, id: @ticket.id
       expect(response.status).to eql(200)
-      expect(Code.last.used?).to be true
+      expect(Ticket.last.used?).to be true
     end
 
     let(:other_purchase_order) { create :purchase_order }
-    let(:other_code) { create :code, purchase_order: other_purchase_order }
-    it "should not mark code other than his own" do
-      post :mark_used, id: other_code.id
+    let(:other_ticket) { create :ticket, purchase_order: other_purchase_order }
+    it "should not mark ticket other than his own" do
+      post :mark_used, id: other_ticket.id
       expect(response.status).to eql(401)
     end
   end
