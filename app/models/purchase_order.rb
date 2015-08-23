@@ -2,6 +2,8 @@ class PurchaseOrder < ActiveRecord::Base
   has_many :codes
   belongs_to :user
 
+  attr_accessor :payment_profile_id, :number_of_codes, :brand_id
+
   def purchase_in_stripe(params)
     payment_profile_id = params[:payment_profile_id]
     price = params[:price]

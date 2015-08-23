@@ -23,5 +23,12 @@ describe CodesController do
       expect(response.status).to eql(200)
       expect(Code.last.used?).to be true
     end
+
+    let(:other_purchase_order) { create :purchase_order }
+    let(:other_code) { create :code, purchase_order: other_purchase_order }
+    it "should not mark code other than his own" do
+      post :mark_used, id: other_code.id
+      expect(response.status).to eql(401)
+    end
   end
 end

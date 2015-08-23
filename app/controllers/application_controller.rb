@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
 
   skip_before_filter :verify_authenticity_token  
 
+  rescue_from CanCan::AccessDenied do |exception|
+    head 401
+  end
+
   def current_user
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end

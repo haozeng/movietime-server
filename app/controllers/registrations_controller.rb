@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
-  skip_authorization_check only: [:create, :oauth]
-  skip_load_and_authorize_resource only: [:create, :oauth]
+  skip_authorization_check
+  skip_load_and_authorize_resource
 
   before_action :doorkeeper_authorize!, only: [:update]
 
@@ -18,7 +18,7 @@ class RegistrationsController < ApplicationController
   end
 
   def update
-    user = User.find(params[:id])
+    user = current_user
 
     if user.update_attributes(sign_up_params)
       head :ok

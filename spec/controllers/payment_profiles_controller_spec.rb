@@ -48,6 +48,12 @@ describe PaymentProfilesController do
       result = JSON.parse(response.body)
       expect(result).to include('user_id', 'id', 'brand', 'last_four_digits')
     end
+
+    let(:other_payment_profile) { create :payment_profile }
+    it "should not see payment profiles other than his own" do
+      get :show, id: other_payment_profile.id, format: :json
+      expect(response.status).to eql(401)
+    end
   end
 
   context "#destroy" do
@@ -60,6 +66,12 @@ describe PaymentProfilesController do
 
       expect(response.status).to eql(204)
       expect(user.payment_profiles.count).to eql(0)
+    end
+
+    let(:other_payment_profile) { create :payment_profile }
+    it "should not destroy payment profiles other than his own" do
+      delete :destroy, id: other_payment_profile.id, format: :json
+      expect(response.status).to eql(401)
     end
   end
 end
