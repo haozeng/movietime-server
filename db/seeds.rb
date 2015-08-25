@@ -19,7 +19,7 @@ def ensure_payment_profile(user, payment_profile_params)
 end
 
 def ensure_ticket(brand, ticket_params)
-  ticket = brand.tickets.where(ticket: ticket_params[:ticket]).first || brand.tickets.new
+  ticket = brand.tickets.where(code: ticket_params[:code]).first || brand.tickets.new
   ticket.update_attributes(ticket_params)
   ticket
 end
@@ -43,7 +43,7 @@ if Rails.env.development?
   # Generate 5 tickets for each brand
   Ticket.destroy_all
   [amc, regal, cinemark].each do |b|
-    5.times { ensure_ticket(b, { ticket: rand.to_s[2..11] })}
+    5.times { ensure_ticket(b, { code: rand.to_s[2..11] })}
   end
 
   # Destroy all purchase orders and create new ones
@@ -51,15 +51,15 @@ if Rails.env.development?
   5.times { ensure_purchase_order(user, { price: 20 }) }
 
   # Link tickets with purchase_orders
-  last_ticket_id = ticket.last.id
+  last_ticket_id = Ticket.last.id
   PurchaseOrder.all.each do |p|
-    ticket = ticket.find(last_ticket_id)
+    ticket = Ticket.find(last_ticket_id)
     ticket.purchase_order_id = p.id
     ticket.save
     last_ticket_id -= 1
   end
 
-  ticket.first(5).each do |ticket|
+  Ticket.first(5).each do |ticket|
     p = PurchaseOrder.first
     ticket.purchase_order_id = p.id
     ticket.save

@@ -5,7 +5,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
 
   # just use this for now
-  # config.web_console.whitelisted_ips = '10.0.2.2,192.168.1.1'
+  # config.web_console.whitelisted_ips = '10.0.2.2'
 
   config.cache_classes = false
 
