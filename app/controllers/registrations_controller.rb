@@ -28,7 +28,7 @@ class RegistrationsController < ApplicationController
   end
 
   def oauth
-    user = User.where(sign_up_params).first
+    user = User.where(sign_up_params.slice(:email)).first
 
     unless user
       user = User.new(sign_up_params)
