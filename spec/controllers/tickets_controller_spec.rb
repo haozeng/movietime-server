@@ -14,6 +14,11 @@ describe TicketsController do
 
   context "#create" do
     let(:code) { rand.to_s[2..1] }
+
+    before do
+      @request.env["HTTP_AUTHORIZATION"] = "Basic " + Base64::encode64("#{ENV['TICKET_CREATION_USERNAME']}:#{ENV['TICKET_CREATION_PASSWORD']}")
+    end
+
     it "should create a code from scanner" do
       post :create, ticket: { code: code, brand_id: brand.id }, format: :json
       expect(response.status).to eql(200)

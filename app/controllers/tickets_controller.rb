@@ -3,6 +3,9 @@ class TicketsController < ApplicationController
   skip_authorization_check only: :create
   skip_load_and_authorize_resource only: :create
 
+  # http basic auth for codes creation
+  http_basic_authenticate_with name: ENV['TICKET_CREATION_USERNAME'], password: ENV['TICKET_CREATION_PASSWORD'], only: :create
+
   # End point for scanner
   def create
     @ticket = Ticket.new(ticket_params)

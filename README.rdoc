@@ -17,11 +17,10 @@ http header: 'Authorization' => "bearer #{token}"
 curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0db4b9e10a6e06bf" -X GET localhost:3000/purchase_orders
 
 
-
 ToDoList:
 
 icons for purchase flows
 logo
 launch screen
 
-add client credentials flow for codes controller
+add selections of brands in scanner app and http_basic auth in header

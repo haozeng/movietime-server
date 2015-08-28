@@ -6,6 +6,10 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load .env
+require 'dotenv'
+Dotenv.load
+
 module MovietimeServer
   class Application < Rails::Application
     # Use the responders controller from the responders gem
