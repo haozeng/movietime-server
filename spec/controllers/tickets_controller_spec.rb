@@ -12,6 +12,24 @@ describe TicketsController do
     allow(controller).to receive(:doorkeeper_token).and_return(token)
   end
 
+  context "#create" do
+    let(:code) { rand.to_s[2..1] }
+    it "should create a code from scanner" do
+      post :create, ticket: { code: code, brand_id: brand.id }, format: :json
+      expect(response.status).to eql(200)
+      expect(Ticket.last.code).to eql(code)
+    end
+
+    it "same code shall not be allowed" do
+      ticket = create :ticket
+
+      post :create, ticket: { code: ticket.code }, format: :json
+      expect(response.status).to eql(422)
+      result = JSON.parse(response.body)
+      expect(result["errors"]).to eql(['Code has already been taken'])
+    end
+  end
+
   context "#mark_use" do
     before do
       purchase_order = create :purchase_order, user: user

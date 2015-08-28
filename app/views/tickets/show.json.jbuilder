@@ -1,0 +1,1 @@
+json.(@ticket, :id, :code, :brand_id, :status)
