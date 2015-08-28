@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150823062332) do
+ActiveRecord::Schema.define(version: 20150827184209) do
 
   create_table "brands", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20150823062332) do
 
   create_table "payment_profiles", force: :cascade do |t|
     t.integer  "user_id",          limit: 4
-    t.string   "brand",            limit: 255
+    t.string   "card_type",        limit: 255
     t.integer  "last_four_digits", limit: 4
     t.integer  "stripe_user_id",   limit: 4
     t.datetime "created_at",                   null: false

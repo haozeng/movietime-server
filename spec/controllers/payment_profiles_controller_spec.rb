@@ -14,7 +14,7 @@ describe PaymentProfilesController do
 
   context "#create" do
     it "should create a paymenet profile" do
-      post :create, payment_profile: { user_id: user.id, brand: 'MC',
+      post :create, payment_profile: { user_id: user.id, card_type: 'MC',
                                        last_four_digits: '4212' },
                     format: :json
 
@@ -46,7 +46,7 @@ describe PaymentProfilesController do
 
       expect(response.status).to eql(200)
       result = JSON.parse(response.body)
-      expect(result).to include('user_id', 'id', 'brand', 'last_four_digits')
+      expect(result).to include('user_id', 'id', 'card_type', 'last_four_digits')
     end
 
     let(:other_payment_profile) { create :payment_profile }

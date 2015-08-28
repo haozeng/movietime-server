@@ -11,7 +11,7 @@ class RegistrationsController < ApplicationController
       token = Doorkeeper::AccessToken.create!(:application_id => ENV['APPLICATION_ID'],
                                               :resource_owner_id => user.id)
 
-      render json: { access_token: token.token }
+      render json: { access_token: token.token, user_id: user.id }
     else
       render json: { errors: user.errors.full_messages }, status: 422
     end
@@ -37,7 +37,7 @@ class RegistrationsController < ApplicationController
 
     token = Doorkeeper::AccessToken.create!(:application_id => ENV['APPLICATION_ID'],
                                             :resource_owner_id => user.id)
-    render json: { access_token: token.token }
+    render json: { access_token: token.token, user_id: user.id }
   end
 
   private

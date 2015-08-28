@@ -1,6 +1,9 @@
 class PaymentProfilesController < ApplicationController
   before_action :doorkeeper_authorize!
 
+  # there are here simply for testing
+  # skip_authorization_check
+  # skip_load_and_authorize_resource
   def create
     @payment_profile = PaymentProfile.new(payment_profile_params)
 
@@ -32,6 +35,6 @@ class PaymentProfilesController < ApplicationController
   private
 
   def payment_profile_params
-    params.require(:payment_profile).permit(:brand, :last_four_digits, :user_id, :stripe_token)
+    params.require(:payment_profile).permit(:card_type, :last_four_digits, :user_id, :stripe_token)
   end
 end

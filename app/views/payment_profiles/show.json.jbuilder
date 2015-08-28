@@ -1,1 +1,1 @@
-json.(@payment_profile, :id, :user_id, :brand, :last_four_digits)
+json.(@payment_profile, :id, :user_id, :card_type, :last_four_digits)
