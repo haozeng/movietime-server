@@ -22,5 +22,3 @@ ToDoList:
 icons for purchase flows
 logo
 launch screen
-
-add selections of brands in scanner app and http_basic auth in header

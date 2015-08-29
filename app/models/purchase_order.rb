@@ -26,8 +26,12 @@ class PurchaseOrder < ActiveRecord::Base
 
   def generate_tickets(number_of_tickets, brand_id)
     number_of_tickets.times do
-      Ticket.create(purchase_order_id: self.id,
-                  brand_id: brand_id)
+      ticket = Ticket.where(brand_id: brand_id, purchase_order_id: nil).first
+      if ticket
+        ticket.update_attributes(purchase_order_id: self.id)
+      else
+        raise 'Please load tickets into the database'
+      end
     end
   end
 end

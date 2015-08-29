@@ -60,6 +60,7 @@ describe PurchaseOrdersController do
   context "#create" do
     before do
       allow(Stripe::Charge).to receive(:create).and_return(true)
+      create_list :ticket, 2, brand_id: brand.id
     end
 
     it 'should return one ticket for user' do
@@ -68,6 +69,7 @@ describe PurchaseOrdersController do
       expect(response.status).to eql(200)
       expect(user.purchase_orders.count).to eql(1)
       expect(user.purchase_orders[0].tickets.count).to eql(2)
+      expect(Ticket.last.purchase_order_id).to eql(user.purchase_orders[0].id)
     end
   end
 end
