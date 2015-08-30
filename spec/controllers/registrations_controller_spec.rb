@@ -46,6 +46,7 @@ describe RegistrationsController do
       expect(response.status).to eql(200)
       result = JSON.parse(response.body)
       expect(result['access_token']).not_to be_nil
+      expect(User.last.uid).not_to be_nil
     end
   end
 end

@@ -22,3 +22,7 @@ ToDoList:
 icons for purchase flows
 logo
 launch screen
+
+ques:
+parse error response
+segue shit in payment profile controller
