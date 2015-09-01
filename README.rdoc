@@ -18,11 +18,11 @@ curl -H "Authorization: Bearer caf3afbfd301f5690aa70f361f269f8b89f522cd14d3a0dd0
 
 
 ToDoList:
-
 icons for purchase flows
 logo
 launch screen
 
-ques:
-parse error response
-segue shit in payment profile controller
+todo:
+logout button and maybe sign in with Facebook
+payment profiles selection button and able to select
+add payment profile complete segue back to index page

@@ -74,4 +74,24 @@ describe PaymentProfilesController do
       expect(response.status).to eql(401)
     end
   end
+
+  context "#update" do
+    before do
+      create :payment_profile, user: user, stripe_user_id: '1234'
+    end
+
+    it "should set the default payment_profile for this user" do
+      put :update, id: PaymentProfile.last.id, payment_profile: { default: true }, format: :json
+
+      expect(response.status).to eql(200)
+      expect(PaymentProfile.last.default).to be true
+    end
+
+    let(:other_payment_profile) { create :payment_profile }
+    it "should not set payment profiles other than his own" do
+      put :update, id: other_payment_profile.id, payment_profile: { default: true }, format: :json
+
+      expect(response.status).to eql(401)
+    end
+  end
 end

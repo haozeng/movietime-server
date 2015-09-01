@@ -1,9 +1,6 @@
 class PaymentProfilesController < ApplicationController
   before_action :doorkeeper_authorize!
 
-  # there are here simply for testing
-  # skip_authorization_check
-  # skip_load_and_authorize_resource
   def create
     @payment_profile = PaymentProfile.new(payment_profile_params)
 
@@ -25,6 +22,16 @@ class PaymentProfilesController < ApplicationController
     respond_with @payment_profiles
   end
 
+  def update
+    @payment_profile = PaymentProfile.find(params[:id])
+
+    if @payment_profile.update_attributes(payment_profile_params)
+      respond_with @payment_profile
+    else
+      render json: { errors: @payment_profile.errors.full_messages }, status: 422
+    end
+  end
+
   def destroy
     @payment_profile = PaymentProfile.find(params[:id])
     @payment_profile.destroy
@@ -35,6 +42,6 @@ class PaymentProfilesController < ApplicationController
   private
 
   def payment_profile_params
-    params.require(:payment_profile).permit(:card_type, :last_four_digits, :user_id, :stripe_token)
+    params.require(:payment_profile).permit(:card_type, :last_four_digits, :user_id, :stripe_token, :default)
   end
 end

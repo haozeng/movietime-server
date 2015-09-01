@@ -4,8 +4,8 @@ class PurchaseOrdersController < ApplicationController
   def index
     # use params[:page] and params[:per_page] to paginate
     @tickets = paginate Ticket.joins(:purchase_order => :user).
-                           where('purchase_orders.user_id = ?', current_user.id).
-                           order(:status).order('purchase_orders.created_at DESC'), per_page: 20
+                               where('purchase_orders.user_id = ?', current_user.id).
+                               order(:status).order('purchase_orders.created_at DESC'), per_page: 20
 
     respond_with @tickets
   end

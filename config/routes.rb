@@ -7,10 +7,12 @@ Rails.application.routes.draw do
     post 'oauth', on: :collection
   end
 
-  resources :payment_profiles, only: [:create, :index, :show, :destroy]
+  resources :payment_profiles, only: [:create, :index, :show, :destroy, :update]
 
   resources :tickets, only: [:show, :create] do
     post 'mark_used', on: :member
     post 'mark_unused', on: :member
   end
+
+  get '/users/me', to: "users#show"
 end

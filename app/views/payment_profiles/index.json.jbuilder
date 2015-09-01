@@ -4,4 +4,5 @@ json.payment_profiles @payment_profiles do |payment_profile|
   json.card_type payment_profile.card_type
   json.last_four_digits payment_profile.last_four_digits.to_s
   json.exp payment_profile.exp
+  json.default payment_profile.default
 end
