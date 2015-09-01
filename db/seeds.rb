@@ -13,7 +13,7 @@ def ensure_user(user_params)
 end
 
 def ensure_payment_profile(user, payment_profile_params)
-  payment_profile = user.payment_profiles.where(brand: payment_profile_params[:brand], last_four_digits: payment_profile_params[:last_four_digits]).first || user.payment_profiles.new
+  payment_profile = user.payment_profiles.where(card_type: payment_profile_params[:card_type], last_four_digits: payment_profile_params[:last_four_digits]).first || user.payment_profiles.new
   payment_profile.update_attributes(payment_profile_params)
   payment_profile
 end
