@@ -38,7 +38,7 @@ if Rails.env.development?
   user = ensure_user(email: 'hzeng1989@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'hao', last_name: 'zeng')
 
-  payment_profile = ensure_payment_profile(user, { brand: 'MC', last_four_digits: '3212', stripe_user_id: '1' })
+  payment_profile = ensure_payment_profile(user, { card_type: 'MC', last_four_digits: '3212', stripe_user_id: '1' })
 
   # Generate 5 tickets for each brand
   Ticket.destroy_all
