@@ -41,12 +41,48 @@ describe RegistrationsController do
   end
 
   context "#oauth" do
-    it 'should be able to create a user from facebook oauth info' do
-      post :oauth, user: { uid: '1234567', email: 'test@gmail.com' }
-      expect(response.status).to eql(200)
-      result = JSON.parse(response.body)
-      expect(result['access_token']).not_to be_nil
-      expect(User.last.uid).not_to be_nil
+    context "#facebook" do
+      before do
+        create :user, uid: 'facebook_uid', email: 'facebook@gmail.com'
+      end
+
+      it 'should be able to create a user from facebook oauth info' do
+        post :oauth, user: { uid: '1234567', email: 'test@gmail.com' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+        expect(User.last.uid).not_to be_nil
+      end
+
+      it 'should not require password for the same facebook login user as long as uid matches' do
+        post :oauth, user: { uid: 'facebook_uid', email: 'facebook@gmail.com' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+      end
+
+      it 'should render 422 if the facebook uid doesn\'t match' do
+        post :oauth, user: { uid: 'facebook_uid_not_match', email: 'facebook@gmail.com' }
+        expect(response.status).to eql(422)
+      end
+    end
+
+    context "#regular user" do
+      before do
+        create :user, email: 'regular@gmail.com', password: '123456'
+      end
+
+      it 'should be able to login the user using the right password' do
+        post :oauth, user: { email: 'regular@gmail.com', password: '123456' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+      end
+
+      it 'should render 422 if the password doesn\'t match' do
+        post :oauth, user: { email: 'regular@gmail.com', password: '12345678' }
+        expect(response.status).to eql(422)
+      end
     end
   end
 end

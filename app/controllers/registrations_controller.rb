@@ -30,9 +30,20 @@ class RegistrationsController < ApplicationController
   def oauth
     user = User.where(sign_up_params.slice(:email)).first
 
-    unless user
-      user = User.new(sign_up_params)
-      user.save(:validate => false)
+    # Facebook sign up/sign in
+    if sign_up_params[:uid]
+      if user
+        if user.uid != sign_up_params[:uid]
+          render json: { errors: 'Invalid Sign in with facebook. User ID doesn\'t match. Please contact support.' }, status: 422 and return
+        end
+      else
+        user = User.new(sign_up_params)
+        user.save(:validate => false)
+      end
+    else # Website user sign up/sign in
+      unless user.valid_password?(sign_up_params[:password])
+        render json: { errors: 'The password you entered is wrong.' }, status: 422 and return
+      end
     end
 
     token = Doorkeeper::AccessToken.create!(:application_id => ENV['APPLICATION_ID'],
