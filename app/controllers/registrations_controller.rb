@@ -30,8 +30,15 @@ class RegistrationsController < ApplicationController
   def oauth
     user = User.where(sign_up_params.slice(:email)).first
 
-    # Facebook sign up/sign in
-    if sign_up_params[:uid]
+    if sign_up_params[:uid].blank?
+      unless user
+        render json: { errors: 'The email does not exist in our system.' }, status: 422 and return
+      end
+
+      unless user.valid_password?(sign_up_params[:password])
+        render json: { errors: 'The password you entered is not correct.' }, status: 422 and return
+      end
+    else # Facebook sign up/sign in
       if user
         if user.uid != sign_up_params[:uid]
           render json: { errors: 'Invalid Sign in with facebook. User ID doesn\'t match. Please contact support.' }, status: 422 and return
@@ -39,10 +46,6 @@ class RegistrationsController < ApplicationController
       else
         user = User.new(sign_up_params)
         user.save(:validate => false)
-      end
-    else # Website user sign up/sign in
-      unless user.valid_password?(sign_up_params[:password])
-        render json: { errors: 'The password you entered is wrong.' }, status: 422 and return
       end
     end
 

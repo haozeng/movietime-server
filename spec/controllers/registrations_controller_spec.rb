@@ -73,6 +73,11 @@ describe RegistrationsController do
       end
 
       it 'should be able to login the user using the right password' do
+        post :oauth, user: { email: 'regular_not_exist@gmail.com' }
+        expect(response.status).to eql(422)
+      end
+
+      it 'should be able to login the user using the right password' do
         post :oauth, user: { email: 'regular@gmail.com', password: '123456' }
         expect(response.status).to eql(200)
         result = JSON.parse(response.body)

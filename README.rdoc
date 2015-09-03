@@ -23,7 +23,8 @@ icons for purchase flows
 logo
 launch screen
 
-todo:
+IOS todo:
+clean up my sign-in/sign-up branch
 logout button and maybe sign in with Facebook
 payment profiles selection button and able to select
-add payment profile complete segue back to index page
+user without payment profile will crash in brands index page when fetching
