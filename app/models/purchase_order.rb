@@ -6,9 +6,9 @@ class PurchaseOrder < ActiveRecord::Base
 
   def purchase_in_stripe(params)
     payment_profile_id = params[:payment_profile_id]
-    price = params[:price]
     number_of_tickets = params[:number_of_tickets]
     brand_id = params[:brand_id]
+    price = number_of_tickets * Brand.find(brand_id).price
 
     begin
       stripe_user_id = PaymentProfile.find(payment_profile_id).stripe_user_id
@@ -19,6 +19,7 @@ class PurchaseOrder < ActiveRecord::Base
       )
 
       generate_tickets(number_of_tickets, brand_id)
+      update_attributes(price: price)
     rescue Stripe::CardError => e
       # The card has been declined
     end

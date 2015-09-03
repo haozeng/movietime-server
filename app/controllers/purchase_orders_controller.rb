@@ -11,7 +11,7 @@ class PurchaseOrdersController < ApplicationController
   end
 
   def create
-    @purchase_order = current_user.purchase_orders.new(purchase_order_params.slice(:price))
+    @purchase_order = current_user.purchase_orders.new
 
     if @purchase_order.save
       @purchase_order.purchase_in_stripe(purchase_order_params)
@@ -23,7 +23,7 @@ class PurchaseOrdersController < ApplicationController
 
   private
   def purchase_order_params
-    params.require(:purchase_order).permit(:payment_profile_id, :price,
+    params.require(:purchase_order).permit(:payment_profile_id,
                                            :number_of_tickets, :brand_id)
   end
 end

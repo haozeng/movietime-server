@@ -65,10 +65,11 @@ describe PurchaseOrdersController do
 
     it 'should return one ticket for user' do
       post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
-                                      price: brand.price*2, number_of_tickets: 2 }, format: :json
+                                      number_of_tickets: 2 }, format: :json
       expect(response.status).to eql(200)
       expect(user.purchase_orders.count).to eql(1)
       expect(user.purchase_orders[0].tickets.count).to eql(2)
+      expect(user.purchase_orders[0].price).to eql(brand.price * 2)
       expect(Ticket.last.purchase_order_id).to eql(user.purchase_orders[0].id)
     end
   end

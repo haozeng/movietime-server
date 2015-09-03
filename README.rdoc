@@ -22,6 +22,8 @@ ToDoList:
 icons for purchase flows
 logo
 launch screen
+reset password api
+regal/cimemarks code rendering format
 
 IOS todo:
 clean up my sign-in/sign-up branch
