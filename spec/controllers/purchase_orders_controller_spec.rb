@@ -34,11 +34,9 @@ describe PurchaseOrdersController do
         tickets = create_list :ticket, 40, purchase_order: purchase_order
       end
 
-      it "should return 20 results at once" do
-        get :index, page: 1, format: :json
+      it "should return all results at once" do
+        get :index, format: :json
         expect(response.status).to eql(200)
-        result = JSON.parse(response.body)
-        expect(result['purchase_orders'].count).to eql(20)
       end
     end
 

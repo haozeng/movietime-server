@@ -6,10 +6,9 @@ class UsersController < ApplicationController
   def show
     @user = current_user    
     @payment_profiles = current_user.payment_profiles
-    # return 40 tickets
-    @tickets = paginate Ticket.joins(:purchase_order => :user).
-                               where('purchase_orders.user_id = ?', current_user.id).
-                               order(:status).order('purchase_orders.created_at DESC'), per_page: 40
+    @tickets = Ticket.joins(:purchase_order => :user).
+                      where('purchase_orders.user_id = ?', current_user.id).
+                      order(:status).order('purchase_orders.created_at DESC')
 
     response = { user: @user, 
                  payment_profiles: @payment_profiles, 

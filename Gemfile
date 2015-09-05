@@ -36,8 +36,6 @@ gem 'responders', '~> 2.0'
 gem 'doorkeeper'
 gem 'devise'
 gem 'stripe'
-gem 'will_paginate'
-gem 'api-pagination'
 gem 'cancancan'
 gem 'dotenv-rails'
 
