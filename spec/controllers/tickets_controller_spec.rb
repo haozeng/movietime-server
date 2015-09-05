@@ -42,7 +42,7 @@ describe TicketsController do
     end
 
     it 'should mark the ticket as used' do
-      post :mark_used, id: @ticket.id
+      post :mark_used, id: @ticket.id, format: :json
       expect(response.status).to eql(200)
       expect(Ticket.last.used?).to be true
     end
@@ -50,7 +50,7 @@ describe TicketsController do
     let(:other_purchase_order) { create :purchase_order }
     let(:other_ticket) { create :ticket, purchase_order: other_purchase_order }
     it "should not mark ticket other than his own" do
-      post :mark_used, id: other_ticket.id
+      post :mark_used, id: other_ticket.id, format: :json
       expect(response.status).to eql(401)
     end
   end

@@ -27,14 +27,14 @@ class TicketsController < ApplicationController
     @ticket = Ticket.find(params[:id])
     @ticket.mark_used!
 
-    head :ok
+    respond_with @ticket, location: ticket_url, status: :ok
   end
 
   def mark_unused
     @ticket = Ticket.find(params[:id])
     @ticket.mark_unused!
 
-    head :ok
+    respond_with @ticket, location: ticket_url, status: :ok
   end
 
   private
