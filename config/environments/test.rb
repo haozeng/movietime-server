@@ -43,4 +43,6 @@ Rails.application.configure do
   # Using integration tests with FactoryGirl may save multiple copies of your test files within the app.
   # To avoid this, specify a custom path in the config/environments/test.rb like so:
   Paperclip::Attachment.default_options[:path] = "#{Rails.root}/spec/paperclips/:class/:id_partition/:style.:extension"
+
+  config.action_mailer.default_url_options = { :host => 'localhost' }
 end

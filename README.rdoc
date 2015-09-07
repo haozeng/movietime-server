@@ -22,10 +22,7 @@ ToDoList:
 icons for purchase flows
 logo
 launch screen
-1, api to reset password
-2, view in server side to handle password stuff
-3, movie code rendering and regal/cinemarks code format research
-6, forget password UI in IOS
+4, forget password UI in IOS
 
 IOS todo:
 clean up my sign-in/sign-up branch

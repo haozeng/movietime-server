@@ -73,4 +73,6 @@ RSpec.configure do |config|
   config.after(:suite) do
     FileUtils.rm_rf(Dir["#{Rails.root}/spec/paperclips/"])
   end
+
+  config.before(:each) { ActionMailer::Base.deliveries.clear }
 end

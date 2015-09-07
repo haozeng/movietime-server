@@ -15,4 +15,8 @@ Rails.application.routes.draw do
   end
 
   get '/users/me', to: "users#show"
+
+  devise_for :users, controllers: { passwords: "passwords" }
+
+  root to: "home#index"
 end
