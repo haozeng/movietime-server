@@ -18,7 +18,7 @@ class PaymentProfilesController < ApplicationController
   end
 
   def index
-    @payment_profiles = current_user.payment_profiles
+    @payment_profiles = current_user.payment_profiles.order('created_at DESC')
     respond_with @payment_profiles
   end
 
@@ -42,6 +42,6 @@ class PaymentProfilesController < ApplicationController
   private
 
   def payment_profile_params
-    params.require(:payment_profile).permit(:card_type, :last_four_digits, :user_id, :stripe_token, :default)
+    params.require(:payment_profile).permit(:card_type, :last_four_digits, :user_id, :stripe_token, :default, :exp)
   end
 end

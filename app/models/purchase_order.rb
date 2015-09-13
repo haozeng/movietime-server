@@ -6,16 +6,16 @@ class PurchaseOrder < ActiveRecord::Base
 
   def purchase_in_stripe(params)
     payment_profile_id = params[:payment_profile_id]
-    number_of_tickets = params[:number_of_tickets]
+    number_of_tickets = params[:number_of_tickets].to_i
     brand_id = params[:brand_id]
     price = number_of_tickets * Brand.find(brand_id).price
 
     begin
       stripe_user_id = PaymentProfile.find(payment_profile_id).stripe_user_id
       charge = Stripe::Charge.create(
-        amount: price*100, # amount in cents, again
+        amount: (price*100).to_i, # amount in cents, again
         currency: "usd",
-        stripe_user_id: stripe_user_id
+        customer: stripe_user_id
       )
 
       generate_tickets(number_of_tickets, brand_id)
