@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913211654) do
+ActiveRecord::Schema.define(version: 20150914042243) do
 
   create_table "brands", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20150913211654) do
     t.integer  "logo_file_size",    limit: 4
     t.datetime "logo_updated_at"
     t.float    "original_price",    limit: 24
+    t.string   "description",       limit: 255
+    t.string   "title",             limit: 255
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|

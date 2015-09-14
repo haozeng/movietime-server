@@ -31,9 +31,9 @@ def ensure_purchase_order(user, purchase_order_params)
 end
 
 if Rails.env.development?
-  amc = ensure_brand(name: 'amc', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'amc.png'), 'r'))
-  regal = ensure_brand(name: 'regal', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'))
-  cinemark = ensure_brand(name: 'cinemark', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'cinemark.png'), 'r'))
+  amc = ensure_brand(name: 'amc', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'amc.png'), 'r'), description: 'Available at at any AMC®, AMC Showplace, Loews®, Cineplex Odeon, Magic Johnson and Star theatres.', title: 'AMC Gold Experience E-Ticket')
+  regal = ensure_brand(name: 'regal', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket')
+  cinemark = ensure_brand(name: 'cinemark', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'cinemark.png'), 'r'), description: 'Available at any Cinemark Theatre nationwide.', title: 'Cinemark Platinum E-Ticket')
 
   user = ensure_user(email: 'hzeng1989@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'hao', last_name: 'zeng')

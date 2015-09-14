@@ -1,1 +1,1 @@
-json.(@brand, :id, :name, :price, :logo, :original_price)
+json.(@brand, :id, :name, :price, :logo, :original_price, :description, :title)
