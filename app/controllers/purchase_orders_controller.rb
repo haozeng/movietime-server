@@ -1,6 +1,4 @@
 class PurchaseOrdersController < ApplicationController
-  before_action :doorkeeper_authorize!
-
   def index
     @tickets = Ticket.joins(:purchase_order => :user).
                       where('purchase_orders.user_id = ?', current_user.id).

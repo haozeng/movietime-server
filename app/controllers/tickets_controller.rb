@@ -1,5 +1,5 @@
 class TicketsController < ApplicationController
-  before_action :doorkeeper_authorize!, except: :create
+  skip_before_action :doorkeeper_authorize!, only: :create
   skip_authorization_check only: :create
   skip_load_and_authorize_resource only: :create
 

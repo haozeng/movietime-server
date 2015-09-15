@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :doorkeeper_authorize!
   skip_load_and_authorize_resource
   load_and_authorize_resource :ticket, :class => 'Ticket'
 

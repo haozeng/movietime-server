@@ -1,6 +1,4 @@
 class PaymentProfilesController < ApplicationController
-  before_action :doorkeeper_authorize!
-
   def create
     @payment_profile = PaymentProfile.new(payment_profile_params)
 

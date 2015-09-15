@@ -1,6 +1,7 @@
 require "application_responder"
 
 class ApplicationController < ActionController::Base
+  before_action :doorkeeper_authorize!
   load_and_authorize_resource
   check_authorization
 

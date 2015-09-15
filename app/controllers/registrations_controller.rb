@@ -1,15 +1,15 @@
 class RegistrationsController < ApplicationController
+  skip_before_action :doorkeeper_authorize!, except: [:update]
   skip_authorization_check
   skip_load_and_authorize_resource
-
-  before_action :doorkeeper_authorize!, only: [:update]
 
   def create
     user = User.new(sign_up_params)
 
     if user.save
-      token = Doorkeeper::AccessToken.create!(:application_id => ENV['APPLICATION_ID'],
-                                              :resource_owner_id => user.id)
+      token = Doorkeeper::AccessToken.create!(application_id: ENV['APPLICATION_ID'],
+                                              resource_owner_id: user.id,
+                                              expires_in: Doorkeeper.configuration.access_token_expires_in)
 
       render json: { access_token: token.token, user_id: user.id }
     else
@@ -49,8 +49,9 @@ class RegistrationsController < ApplicationController
       end
     end
 
-    token = Doorkeeper::AccessToken.create!(:application_id => ENV['APPLICATION_ID'],
-                                            :resource_owner_id => user.id)
+    token = Doorkeeper::AccessToken.create!(application_id: ENV['APPLICATION_ID'],
+                                            resource_owner_id: user.id,
+                                            expires_in: Doorkeeper.configuration.access_token_expires_in)
     render json: { access_token: token.token, user_id: user.id }
   end
 
