@@ -10,8 +10,7 @@ class PurchaseOrdersController < ApplicationController
   def create
     @purchase_order = current_user.purchase_orders.new
 
-    if @purchase_order.save
-      @purchase_order.purchase_in_stripe(purchase_order_params)
+    if @purchase_order.purchase_in_stripe(purchase_order_params)
       respond_with @purchase_order
     else
       render json: { errors: @purchase_order.errors.full_messages }, status: 422

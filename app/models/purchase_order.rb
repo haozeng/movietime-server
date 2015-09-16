@@ -18,10 +18,19 @@ class PurchaseOrder < ActiveRecord::Base
         customer: stripe_user_id
       )
 
-      generate_tickets(number_of_tickets, brand_id)
+      ## save the purchase order before generating the ticket
       update_attributes(price: price)
+
+      ## generate the tickets
+      generate_tickets(number_of_tickets, brand_id)
     rescue Stripe::CardError => e
-      # The card has been declined
+      # Since it's a decline, Stripe::CardError will be caught
+      puts "Code is: #{e.code}"
+      puts "Param is: #{e.param}"
+      puts "Message is: #{e.message}"
+      self.errors.add(:base, e.message)
+
+      false
     end
   end
 

@@ -56,19 +56,36 @@ describe PurchaseOrdersController do
   end
 
   context "#create" do
-    before do
-      allow(Stripe::Charge).to receive(:create).and_return(true)
-      create_list :ticket, 2, brand_id: brand.id
+    context "successful transaction" do
+      before do
+        allow(Stripe::Charge).to receive(:create).and_return(true)
+        create_list :ticket, 2, brand_id: brand.id
+      end
+
+      it 'should return one ticket for user' do
+        post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
+                                        number_of_tickets: 2 }, format: :json
+        expect(response.status).to eql(200)
+        expect(user.purchase_orders.count).to eql(1)
+        expect(user.purchase_orders[0].tickets.count).to eql(2)
+        expect(user.purchase_orders[0].price).to eql(brand.price * 2)
+        expect(Ticket.last.purchase_order_id).to eql(user.purchase_orders[0].id)
+      end
     end
 
-    it 'should return one ticket for user' do
-      post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
-                                      number_of_tickets: 2 }, format: :json
-      expect(response.status).to eql(200)
-      expect(user.purchase_orders.count).to eql(1)
-      expect(user.purchase_orders[0].tickets.count).to eql(2)
-      expect(user.purchase_orders[0].price).to eql(brand.price * 2)
-      expect(Ticket.last.purchase_order_id).to eql(user.purchase_orders[0].id)
+    context "unsucessfuly transaction" do
+      before do
+        allow(Stripe::Charge).to receive(:create).and_raise(Stripe::CardError.new('Your card is declined', {},'card_declined'))
+      end
+
+      it 'if purchase is declined, respond with error message and purchase order should not be saved' do
+        post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
+                                        number_of_tickets: 2 }, format: :json
+        expect(response.status).to eql(422)
+        expect(user.purchase_orders.count).to eql(0)
+        result = JSON.parse(response.body)
+        expect(result["errors"][0]).to eql("Your card is declined")
+      end
     end
   end
 end
