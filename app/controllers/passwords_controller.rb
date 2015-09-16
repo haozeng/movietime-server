@@ -7,7 +7,17 @@ class PasswordsController < Devise::PasswordsController
   respond_to :html, only: [:edit, :update]
 
   # https://github.com/plataformatec/devise/blob/1a0192201b317d3f1bac88f5c5b4926d527b1b39/app/controllers/devise_controller.rb
+    # POST /resource/password
+  def create
+    self.resource = resource_class.send_reset_password_instructions(resource_params)
+    yield resource if block_given?
 
+    if successfully_sent?(resource)
+      respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
+    else
+      render json: { errors: 'The user email doesn\'t exist.' }, status: 422
+    end
+  end
 
   # PUT /resource/password
   def update

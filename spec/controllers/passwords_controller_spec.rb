@@ -15,5 +15,12 @@ describe PasswordsController do
       expect(response.status).to eql(201)
       expect(ActionMailer::Base.deliveries.size).to eql(1)
     end
+
+    it "should send back error message if user email doesn't exist" do
+      post :create, user: { email: 'no_existing_email@gmail.com' }, format: :json
+      expect(response.status).to eql(422)
+      result = JSON.parse(response.body)
+      expect(result['errors']).to eql("The user email doesn't exist.")
+    end
   end
 end
