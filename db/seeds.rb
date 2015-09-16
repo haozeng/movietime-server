@@ -37,24 +37,31 @@ if Rails.env.development?
 
   user = ensure_user(email: 'hzeng1989@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'hao', last_name: 'zeng')
+  user2 = ensure_user(email: 'daceywang@gmail.com', password: '123456', password_confirmation: '123456',
+                     first_name: 'yefei', last_name: 'wang')
 
   payment_profile = ensure_payment_profile(user, { card_type: 'MC', last_four_digits: '3212', stripe_user_id: '1' })
+  payment_profile = ensure_payment_profile(user2, { card_type: 'MC', last_four_digits: '3212', stripe_user_id: '2' })
 
   # Generate 5 tickets for each brand
   Ticket.destroy_all
   [amc, regal, cinemark].each do |b|
-    5.times { ensure_ticket(b, { code: rand.to_s[2..11] })}
+    20.times { ensure_ticket(b, { code: rand.to_s[2..11] })}
   end
 
   # Destroy all purchase orders and create new ones
   PurchaseOrder.destroy_all
   5.times { ensure_purchase_order(user, { price: 20 }) }
+  30.times { ensure_purchase_order(user2, { price: 20 }) }
 
   # Link tickets with purchase_orders
   last_ticket_id = Ticket.last.id
   PurchaseOrder.all.each do |p|
     ticket = Ticket.find(last_ticket_id)
     ticket.purchase_order_id = p.id
+    if last_ticket_id % 2 == 0
+      ticket.status = 'used'
+    end
     ticket.save
     last_ticket_id -= 1
   end
