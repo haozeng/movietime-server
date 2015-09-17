@@ -2,8 +2,7 @@ class PaymentProfilesController < ApplicationController
   def create
     @payment_profile = PaymentProfile.new(payment_profile_params)
 
-    if @payment_profile.save
-      @payment_profile.create_in_stripe(payment_profile_params[:stripe_token])
+    if @payment_profile.create_in_stripe(payment_profile_params[:stripe_token])
       respond_with @payment_profile
     else
       render json: { errors: @payment_profile.errors.full_messages }, status: 422

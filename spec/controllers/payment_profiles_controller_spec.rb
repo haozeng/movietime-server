@@ -8,7 +8,7 @@ describe PaymentProfilesController do
 
   before do
     allow(controller).to receive(:doorkeeper_token).and_return(token)
-    allow_any_instance_of(PaymentProfile).to receive(:create_in_stripe).and_return(true)
+    allow(Stripe::Customer).to receive(:create).and_return(double('stripe_user', id: '123124sadf'))
     allow_any_instance_of(PaymentProfile).to receive(:destroy_in_stripe).and_return(true)
   end
 
@@ -20,6 +20,18 @@ describe PaymentProfilesController do
 
       expect(response.status).to eql(200)
       expect(user.payment_profiles.count).to eql(1)
+    end
+
+    it 'if purchase is declined, respond with error message and purchase order should not be saved' do
+      allow(Stripe::Customer).to receive(:create).and_raise(Stripe::CardError.new('Your card is declined', {},'card_declined'))
+      post :create, payment_profile: { user_id: user.id, card_type: 'MC',
+                                       last_four_digits: '4212' },
+                    format: :json
+
+      expect(response.status).to eql(422)
+      expect(user.payment_profiles.count).to eql(0)
+      result = JSON.parse(response.body)
+      expect(result["errors"][0]).to eql("Your card is declined")
     end
   end
 
