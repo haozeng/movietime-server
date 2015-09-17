@@ -23,6 +23,17 @@ describe RegistrationsController do
       result = JSON.parse(response.body)
       expect(result["errors"][0]).to match(/Password confirmation doesn't match Password/)
     end
+
+    it 'user using facebook in the past should still be able to sign up using regular flow' do
+      create :user, uid: 'facebook_uid', email: 'facebook@gmail.com'
+
+      post :create, user: { email: 'facebook@gmail.com', password: '12345678', password_confirmation: '12345678' },
+           format: :json
+
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['access_token']).not_to be_nil
+    end
   end
 
   context "#update" do
@@ -60,11 +71,6 @@ describe RegistrationsController do
         result = JSON.parse(response.body)
         expect(result['access_token']).not_to be_nil
       end
-
-      it 'should render 422 if the facebook uid doesn\'t match' do
-        post :oauth, user: { uid: 'facebook_uid_not_match', email: 'facebook@gmail.com' }
-        expect(response.status).to eql(422)
-      end
     end
 
     context "#regular user" do
@@ -87,6 +93,14 @@ describe RegistrationsController do
       it 'should render 422 if the password doesn\'t match' do
         post :oauth, user: { email: 'regular@gmail.com', password: '12345678' }
         expect(response.status).to eql(422)
+      end
+
+      it 'should be able to login using facebook account and match with the same email' do
+        post :oauth, user: { uid: '1234567', email: 'regular@gmail.com' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+        expect(User.last.uid).not_to be_nil
       end
     end
   end

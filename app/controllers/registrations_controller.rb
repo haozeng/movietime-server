@@ -4,7 +4,14 @@ class RegistrationsController < ApplicationController
   skip_load_and_authorize_resource
 
   def create
-    user = User.new(sign_up_params)
+    user = User.find_by_email(sign_up_params[:email])
+
+    # if user uses facebook in the past
+    if user && user.uid
+      user.attributes = sign_up_params
+    else
+      user = User.new(sign_up_params)
+    end
 
     if user.save
       token = Doorkeeper::AccessToken.create!(application_id: ENV['APPLICATION_ID'],
@@ -40,8 +47,11 @@ class RegistrationsController < ApplicationController
       end
     else # Facebook sign up/sign in
       if user
-        if user.uid != sign_up_params[:uid]
-          render json: { errors: 'Invalid Sign in with facebook. User ID doesn\'t match. Please contact support.' }, status: 422 and return
+        # Facebook sign up/sign in without uid, we want to save the uid for the user from facebook.
+        # User could be sign in/up from app in the past
+        if !user.uid
+          user.uid = sign_up_params[:uid]
+          user.save
         end
       else
         user = User.new(sign_up_params)
