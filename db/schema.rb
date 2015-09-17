@@ -11,20 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914042243) do
+ActiveRecord::Schema.define(version: 20150917043813) do
 
   create_table "brands", force: :cascade do |t|
-    t.string   "name",              limit: 255
-    t.float    "price",             limit: 24
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.string   "logo_file_name",    limit: 255
-    t.string   "logo_content_type", limit: 255
-    t.integer  "logo_file_size",    limit: 4
+    t.string   "name",                limit: 255
+    t.float    "price",               limit: 24
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "logo_file_name",      limit: 255
+    t.string   "logo_content_type",   limit: 255
+    t.integer  "logo_file_size",      limit: 4
     t.datetime "logo_updated_at"
-    t.float    "original_price",    limit: 24
-    t.string   "description",       limit: 255
-    t.string   "title",             limit: 255
+    t.float    "original_price",      limit: 24
+    t.string   "description",         limit: 255
+    t.string   "title",               limit: 255
+    t.text     "tos",                 limit: 65535
+    t.text     "redeem_instructions", limit: 65535
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|

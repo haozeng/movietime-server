@@ -5,4 +5,6 @@ json.brands @brands do |brand|
   json.original_price brand.original_price
   json.description brand.description
   json.title brand.title
+  json.tos brand.tos
+  json.tos brand.redeem_instructions
 end

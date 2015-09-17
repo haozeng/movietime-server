@@ -17,6 +17,13 @@
 /tmp
 /public/system
 
+.DS_Store
 .ruby-gemset
 .ruby-version
 .env
+
+# SSL stuff
+server.csr
+server.key
+combined.crt
+server.pass.key

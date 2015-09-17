@@ -31,9 +31,33 @@ def ensure_purchase_order(user, purchase_order_params)
 end
 
 if Rails.env.development?
-  amc = ensure_brand(name: 'amc', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'amc.png'), 'r'), description: 'Available at at any AMC®, AMC Showplace, Loews®, Cineplex Odeon, Magic Johnson and Star theatres.', title: 'AMC Green E-Ticket')
-  regal = ensure_brand(name: 'regal', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket')
-  cinemark = ensure_brand(name: 'cinemark', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'cinemark.png'), 'r'), description: 'Available at any Cinemark Theatre nationwide.', title: 'Cinemark Platinum E-Ticket')
+  amc = ensure_brand(name: 'amc', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'amc.png'), 'r'), description: 'Available at at any AMC®, AMC Showplace, Loews®, Cineplex Odeon, Magic Johnson and Star theatres.', title: 'AMC Green E-Ticket',
+                     tos: "The AMC Gold Ticket is valid for one admission and redeemable at any AMC, AMC Loews, AMC Showplace, Cineplex Odeon, Magic Johnson and Star Theatres, excluding Canadian theatres.*"\
+                          "Programs subject to a surcharge: 3D, IMAX and AMC ETX, alternate content, AMC Dine-In Theatres and premium services.*"\
+                          "Locations surcharges may also be applied at select theatres. AMC reserves the right to change any surcharge fee without notice.*"\
+                          "Unauthorized reproductions not allowed AMC gold tickets are discount items that are NOT eligible toward earning AMC stubs rewards, either at the time of purchase OR at time of redemption.*"\
+                          "Valid seven days a week.*"\
+                          "Please visit amctheatres.com for additional information.",
+                     redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.
+                                           This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
+
+  regal = ensure_brand(name: 'regal', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket',
+                       tos: "Premiere Tickets must be redeemed at the theatre box office.*"\
+                            "Premiere Tickets are not valid for special events, private screenings or online purchases.*"\
+                            "Premiere tickets have surcharge fees for all IMAX, Large Format, RPX or 3-D Films. Location surcharge fees may also be applied at select theatres.*"\
+                            "Regal Entertainment Group reserves the right to change any upgrade, surcharge or location surcharge fee without notice.",
+                       redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique QRCode valid for ONE ENTRY ONLY.
+                                            This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
+
+  cinemark = ensure_brand(name: 'cinemark', original_price: 13, price: 9.5, logo: File.open(Rails.root.join('spec', 'pictures', 'cinemark.png'), 'r'), description: 'Available at any Cinemark Theatre nationwide.', title: 'Cinemark Platinum E-Ticket',
+                          tos: "Each card is valid for one box office admission.*"\
+                               "Additional premiums may be applied for specially priced films and/or events which are priced higher than normal box office ticket pricing.*"\
+                               "Must be presented at box office.*"\
+                               "This ticket is non-refundable.*"\
+                               "Not redeemable or exchangeable for cash except where required by law.*"\
+                               "Tickets have surcharge fees for IMAX, Large Format or 3-D Films.",
+                          redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.
+                                                This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
 
   user = ensure_user(email: 'hzeng1989@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'hao', last_name: 'zeng')
