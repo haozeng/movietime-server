@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  skip_before_actionskip_before_action :doorkeeper_authorize!
+  skip_before_action :doorkeeper_authorize!
   skip_authorization_check
   skip_load_and_authorize_resource
 

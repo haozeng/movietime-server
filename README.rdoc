@@ -17,3 +17,5 @@ http header: 'Authorization' => "bearer #{token}"
 curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129eafbe9bb3922ff9e2" -X GET localhost:3000/payment_profiles
 curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129eafbe9bb3922ff9e2" -X GET localhost:3000/purchase_orders
 curl -H "Authorization: Bearer b67046dc860dd180db4b85a24b4268a7fde85fc0cffb4d01986bc6b34359d5b1" -X GET localhost:3000/users/me
+
+curl -X GET http://movietime.us/brands

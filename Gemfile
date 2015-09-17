@@ -30,6 +30,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'mysql' ## This is required by heroku
 gem 'mysql2'
 gem 'paperclip', '~> 4.2'
 gem 'responders', '~> 2.0'
