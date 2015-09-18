@@ -18,9 +18,5 @@ curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129ea
 curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129eafbe9bb3922ff9e2" -X GET localhost:3000/purchase_orders
 curl -H "Authorization: Bearer b67046dc860dd180db4b85a24b4268a7fde85fc0cffb4d01986bc6b34359d5b1" -X GET localhost:3000/users/me
 
-curl -X GET http://movietime.us/brands
-curl -X GET http://movietime.us/brands
-curl -X GET https://movietyme.herokuapp.com/brands
-
-
-http://www.joshwright.com/tips/setup-a-godaddy-ssl-certificate-on-heroku
+# Trigger password reset
+curl -H "Content-Type: application/json" -H "Authorization: Bearer 54cd637cf3f7717592526b1e4f4c350cf4ceb2281230d2d191c7a2afab44ff5a" -X POST -d '{"user" : {"email":"hzeng1989@gmail.com"}}' http://localhost:3000/users/password
