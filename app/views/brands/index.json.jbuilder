@@ -6,5 +6,5 @@ json.brands @brands do |brand|
   json.description brand.description
   json.title brand.title
   json.tos brand.tos
-  json.tos brand.redeem_instructions
+  json.redeem_instructions brand.redeem_instructions
 end
