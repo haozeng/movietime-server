@@ -44,7 +44,7 @@ gem 'multi_json'
 gem 'oj'
 
 group :production do
-  gem 'thin'
+  gem 'puma'
 end
 
 group :development, :test do
@@ -56,9 +56,7 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-end
 
-group :development, :test do
   gem 'pry'
   gem 'pry-nav'
 end
