@@ -43,6 +43,10 @@ gem 'dotenv-rails'
 gem 'multi_json'
 gem 'oj'
 
+group :production do
+  gem 'thin'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

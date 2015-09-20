@@ -14,9 +14,13 @@ puts access_token.token
 
 http header: 'Authorization' => "bearer #{token}"
 
-curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129eafbe9bb3922ff9e2" -X GET localhost:3000/payment_profiles
+curl -H "Authorization: Bearer 78fdbce6ad4469a851c5d47ea69a1d390ea5b416ce5a3a2a9fc3379b438160e4" -X GET localhost:3000/payment_profiles
 curl -H "Authorization: Bearer 2c011180abae09025ada07a0952b7ff5af08d1167266129eafbe9bb3922ff9e2" -X GET localhost:3000/purchase_orders
 curl -H "Authorization: Bearer b67046dc860dd180db4b85a24b4268a7fde85fc0cffb4d01986bc6b34359d5b1" -X GET localhost:3000/users/me
 
 # Trigger password reset
 curl -H "Content-Type: application/json" -H "Authorization: Bearer 54cd637cf3f7717592526b1e4f4c350cf4ceb2281230d2d191c7a2afab44ff5a" -X POST -d '{"user" : {"email":"hzeng1989@gmail.com"}}' http://localhost:3000/users/password
+
+
+curl -H "Authorization: Bearer 78fdbce6ad4469a851c5d47ea69a1d390ea5b416ce5a3a2a9fc3379b438160e4" -X GET https://www.movietime.us/brands
+curl -H "Authorization: Bearer 78fdbce6ad4469a851c5d47ea69a1d390ea5b416ce5a3a2a9fc3379b438160e4" -X GET https://www.movietime.us/purchase_orders.json
