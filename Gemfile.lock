@@ -114,7 +114,6 @@ GEM
     mini_portile (0.6.2)
     minitest (5.8.0)
     multi_json (1.11.2)
-    mysql (2.9.1)
     mysql2 (0.3.20)
     netrc (0.10.3)
     newrelic_rpm (3.13.0.299)
@@ -261,7 +260,6 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   multi_json
-  mysql
   mysql2
   newrelic_rpm
   oj
