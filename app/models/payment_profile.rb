@@ -11,7 +11,7 @@ class PaymentProfile < ActiveRecord::Base
       stripe_user = Stripe::Customer.create(source: stripe_token, description: "server user id: #{user.id}")
 
       self.stripe_user_id = stripe_user.id
-      save!
+      save
     rescue Stripe::CardError => e
       # Since it's a decline, Stripe::CardError will be caught
       puts "Code is: #{e.code}"
