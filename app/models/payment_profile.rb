@@ -24,10 +24,17 @@ class PaymentProfile < ActiveRecord::Base
     end
   end
 
-  private
-
   def destroy_in_stripe
-    u = Stripe::Customer.retrieve(stripe_user_id)
-    u.delete
+    begin
+      u = Stripe::Customer.retrieve(stripe_user_id)
+      u.delete
+    rescue Stripe::CardError => e
+      # Since it's a decline, Stripe::CardError will be caught
+      puts "Code is: #{e.code}"
+      puts "Param is: #{e.param}"
+      puts "Message is: #{e.message}"
+      # alert admin why the card can not be destroyed
+      # TODO:
+    end
   end
 end

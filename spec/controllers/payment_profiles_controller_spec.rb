@@ -85,6 +85,9 @@ describe PaymentProfilesController do
       delete :destroy, id: other_payment_profile.id, format: :json
       expect(response.status).to eql(401)
     end
+
+    it 'if destroy payment_profile is declined, alert admin about the reason' do
+    end
   end
 
   context "#update" do
