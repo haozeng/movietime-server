@@ -84,7 +84,7 @@ describe PurchaseOrdersController do
         expect(response.status).to eql(422)
         expect(user.purchase_orders.count).to eql(0)
         result = JSON.parse(response.body)
-        expect(result["errors"][0]).to eql("Your card is declined")
+        expect(result["errors"][0]).to match(/Your card is declined/)
       end
     end
   end

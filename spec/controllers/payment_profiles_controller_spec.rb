@@ -31,7 +31,7 @@ describe PaymentProfilesController do
       expect(response.status).to eql(422)
       expect(user.payment_profiles.count).to eql(0)
       result = JSON.parse(response.body)
-      expect(result["errors"][0]).to eql("Your card is declined")
+      expect(result["errors"][0]).to match(/Your card is declined/)
     end
   end
 
