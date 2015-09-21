@@ -87,6 +87,8 @@ if Rails.env.development?
     last_ticket_id -= 1
   end
 
+  PaymentProfile.destroy_all
+
   puts '----User count----'
   puts User.count
   puts '----PaymentProfile count----'
