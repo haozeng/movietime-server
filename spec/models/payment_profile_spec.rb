@@ -18,4 +18,11 @@ describe PaymentProfile do
     payment_profile = PaymentProfile.new(user_id: 2, card_type: 'MC', last_four_digits: '1234')
     expect(payment_profile.valid?).to be true
   end
+
+  it 'if card fails validation, it should not create itself in stripe' do
+    create :payment_profile, user_id: 1, card_type: 'MC', last_four_digits: '1234'
+
+    payment_profile = PaymentProfile.new(user_id: 1, card_type: 'MC', last_four_digits: '1234')
+    expect(payment_profile.create_in_stripe('stripe_token')).to be false
+  end
 end

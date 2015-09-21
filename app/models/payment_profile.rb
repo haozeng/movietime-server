@@ -4,10 +4,11 @@ class PaymentProfile < ActiveRecord::Base
   before_destroy :destroy_in_stripe
 
   attr_accessor :stripe_token
-  validates :last_four_digits, uniqueness: { scope: [:user_id, :card_type], message: 'already exists.' }
+  validates :last_four_digits, uniqueness: { scope: [:user_id, :card_type], message: '^Credit Card already exists.' }
 
   def create_in_stripe(stripe_token)
     begin
+      return false unless valid?
       stripe_user = Stripe::Customer.create(source: stripe_token, description: "server user id: #{user.id}")
 
       self.stripe_user_id = stripe_user.id

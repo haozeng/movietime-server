@@ -32,6 +32,7 @@ gem 'cancancan'
 gem 'dotenv-rails'
 gem 'multi_json'
 gem 'oj'
+gem 'custom_error_message'
 
 group :production do
   gem 'puma'
