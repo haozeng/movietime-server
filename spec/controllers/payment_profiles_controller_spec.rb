@@ -9,7 +9,7 @@ describe PaymentProfilesController do
   before do
     allow(controller).to receive(:doorkeeper_token).and_return(token)
     allow(Stripe::Customer).to receive(:create).and_return(double('stripe_user', id: '123124sadf'))
-    allow_any_instance_of(PaymentProfile).to receive(:destroy_in_stripe).and_return(true)
+    allow(Stripe::Customer).to receive(:retrieve).and_return(double('stripe_user', delete: true))
   end
 
   context "#create" do
@@ -20,6 +20,7 @@ describe PaymentProfilesController do
 
       expect(response.status).to eql(200)
       expect(user.payment_profiles.count).to eql(1)
+      expect(user.payment_profiles[0].default).to be true
     end
 
     it 'if purchase is declined, respond with error message and purchase order should not be saved' do
@@ -32,6 +33,21 @@ describe PaymentProfilesController do
       expect(user.payment_profiles.count).to eql(0)
       result = JSON.parse(response.body)
       expect(result["errors"][0]).to match(/Your card is declined/)
+    end
+
+    it 'if user add second payment_profile, the first default one should be revoked' do
+      post :create, payment_profile: { user_id: user.id, card_type: 'MC',
+                                       last_four_digits: '4321' },
+                    format: :json
+
+      expect(user.payment_profiles[0].default).to be true
+
+      post :create, payment_profile: { user_id: user.id, card_type: 'MC',
+                                       last_four_digits: '1234' },
+                    format: :json
+
+      expect(user.payment_profiles.where(last_four_digits: '4321').first.default).to be false
+      expect(user.payment_profiles.where(last_four_digits: '1234').first.default).to be true
     end
   end
 
@@ -70,7 +86,7 @@ describe PaymentProfilesController do
 
   context "#destroy" do
     before do
-      create :payment_profile, user: user, stripe_user_id: '1234'
+      @payment_profile = create :payment_profile, user: user, stripe_user_id: '1234', default: true
     end
 
     it "should the payment_profile for this user" do
@@ -84,6 +100,24 @@ describe PaymentProfilesController do
     it "should not destroy payment profiles other than his own" do
       delete :destroy, id: other_payment_profile.id, format: :json
       expect(response.status).to eql(401)
+    end
+
+    it "if default payment_profile is destroyed, choose the next one to be default" do
+      next_payment_profile = create :payment_profile, user: user, stripe_user_id: '1234'
+
+      delete :destroy, id: @payment_profile.id, format: :json
+
+      expect(response.status).to eql(204)
+      expect(next_payment_profile.reload.default).to be true
+    end
+
+    it "if not the default payment_profile is destroyed, then default payment_profile should not be changed" do
+      next_payment_profile = create :payment_profile, user: user, stripe_user_id: '1234'
+
+      delete :destroy, id: next_payment_profile.id, format: :json
+
+      expect(response.status).to eql(204)
+      expect(@payment_profile.reload.default).to be true
     end
 
     it 'if destroy payment_profile is declined, alert admin about the reason' do
