@@ -126,7 +126,7 @@ describe PaymentProfilesController do
 
   context "#update" do
     before do
-      create :payment_profile, user: user, stripe_user_id: '1234'
+      @payment_profile = create :payment_profile, user: user, stripe_user_id: '1234'
     end
 
     it "should set the default payment_profile for this user" do
@@ -141,6 +141,15 @@ describe PaymentProfilesController do
       put :update, id: other_payment_profile.id, payment_profile: { default: true }, format: :json
 
       expect(response.status).to eql(401)
+    end
+
+    it "should set the current card as default and remove the orignal default card" do
+      create :payment_profile, user: user, stripe_user_id: '4321', default: true
+
+      put :update, id: @payment_profile.id, payment_profile: { default: true }, format: :json
+
+      expect(user.payment_profiles.where(stripe_user_id: '4321').first.default).to be false
+      expect(user.payment_profiles.where(stripe_user_id: '1234').first.default).to be true
     end
   end
 end

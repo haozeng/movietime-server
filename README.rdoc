@@ -25,6 +25,4 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer 54cd637cf3f77
 curl -H "Authorization: Bearer 78fdbce6ad4469a851c5d47ea69a1d390ea5b416ce5a3a2a9fc3379b438160e4" -X GET https://www.movietime.us/brands
 curl -H "Authorization: Bearer 78fdbce6ad4469a851c5d47ea69a1d390ea5b416ce5a3a2a9fc3379b438160e4" -X GET https://www.movietime.us/purchase_orders.json
 
-
-2, dyno
-3, ticket -> cinemarks
+curl -H "Content-Type: application/json" -H "Authorization: Bearer a80cd5b2924f6fafa1d0c2f356e9596b8a8799e6e312184d40b0b43da3b84c6f" -X PUT -d '{"payment_profile": {"default": true}}' http://localhost:3000/payment_profiles/72.json

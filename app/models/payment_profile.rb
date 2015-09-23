@@ -14,6 +14,11 @@ class PaymentProfile < ActiveRecord::Base
     update_attributes(default: false)
   end
 
+  def set_as_default_payment_profile
+    user.remove_default_payment_profile
+    set_default
+  end
+
   def create_in_stripe(stripe_token)
     begin
       return false unless valid?

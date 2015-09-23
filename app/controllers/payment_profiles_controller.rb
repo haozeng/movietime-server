@@ -19,10 +19,11 @@ class PaymentProfilesController < ApplicationController
     respond_with @payment_profiles
   end
 
+  ## We only have to set the default to true, be careful when using this api
   def update
     @payment_profile = PaymentProfile.find(params[:id])
 
-    if @payment_profile.update_attributes(payment_profile_params)
+    if @payment_profile.set_as_default_payment_profile
       respond_with @payment_profile
     else
       render json: { errors: @payment_profile.errors.full_messages }, status: 422
