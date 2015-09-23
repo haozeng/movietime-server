@@ -151,5 +151,15 @@ describe PaymentProfilesController do
       expect(user.payment_profiles.where(stripe_user_id: '4321').first.default).to be false
       expect(user.payment_profiles.where(stripe_user_id: '1234').first.default).to be true
     end
+
+    it "keep setting one default payment_profile should keep the default the same" do
+      put :update, id: @payment_profile.id, payment_profile: { default: true }, format: :json
+
+      expect(@payment_profile.reload.default).to be true
+
+      put :update, id: @payment_profile.id, payment_profile: { default: true }, format: :json
+
+      expect(@payment_profile.reload.default).to be true      
+    end
   end
 end

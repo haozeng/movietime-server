@@ -15,16 +15,12 @@ class User < ActiveRecord::Base
     purchase_orders.pluck(:id)
   end
 
-  def set_default_payment_profile(payment_profile)
-    if payment_profile.default
-      payment_profiles = self.payment_profiles.where.not(id: payment_profile.id)
-      if payment_profiles.count > 0
-        payment_profiles[0].set_default
-      end
-    end
+  def unset_default_payment_profile
+    default_payment_profile.unset_default if default_payment_profile
+    true
   end
 
-  def remove_default_payment_profile
-    default_payment_profile.unset_default if default_payment_profile
+  def set_default_payment_profile(payment_profile)
+    payment_profile.set_default
   end
 end

@@ -14,11 +14,6 @@ class PaymentProfile < ActiveRecord::Base
     update_attributes(default: false)
   end
 
-  def set_as_default_payment_profile
-    user.remove_default_payment_profile
-    set_default
-  end
-
   def create_in_stripe(stripe_token)
     begin
       return false unless valid?
@@ -26,7 +21,7 @@ class PaymentProfile < ActiveRecord::Base
 
       self.stripe_user_id = stripe_user.id
       self.default = true
-      user.remove_default_payment_profile
+      user.unset_default_payment_profile
       save
     rescue Stripe::CardError => e
       # Since it's a decline, Stripe::CardError will be caught
@@ -46,12 +41,21 @@ class PaymentProfile < ActiveRecord::Base
       u = Stripe::Customer.retrieve(stripe_user_id)
       u.delete
 
-      user.set_default_payment_profile(self)
+      set_default_payment_profile
     rescue Stripe::InvalidRequestError => e
       # Since it's a decline, Stripe::CardError will be caught
       puts "error: #{e.inspect}"
       # alert admin why the card can not be destroyed
       # TODO:
+    end
+  end
+
+  def set_default_payment_profile
+    if default
+      payment_profiles = user.payment_profiles.where.not(id: id)
+      if payment_profiles.count > 0
+        payment_profiles[0].set_default
+      end
     end
   end
 end

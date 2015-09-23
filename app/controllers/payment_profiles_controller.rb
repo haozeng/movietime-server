@@ -23,7 +23,11 @@ class PaymentProfilesController < ApplicationController
   def update
     @payment_profile = PaymentProfile.find(params[:id])
 
-    if @payment_profile.set_as_default_payment_profile
+    if @payment_profile == current_user.default_payment_profile
+      head 200 and return
+    end
+
+    if current_user.unset_default_payment_profile && current_user.set_default_payment_profile(@payment_profile)
       respond_with @payment_profile
     else
       render json: { errors: @payment_profile.errors.full_messages }, status: 422
