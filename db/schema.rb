@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917043813) do
+ActiveRecord::Schema.define(version: 20150926172257) do
 
   create_table "brands", force: :cascade do |t|
     t.string   "name",                limit: 255
@@ -80,12 +80,16 @@ ActiveRecord::Schema.define(version: 20150917043813) do
     t.boolean  "default",                      default: false
   end
 
+  add_index "payment_profiles", ["user_id"], name: "index_payment_profiles_on_user_id", using: :btree
+
   create_table "purchase_orders", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
     t.float    "price",      limit: 24
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
+
+  add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
     t.integer  "brand_id",          limit: 4
@@ -95,6 +99,10 @@ ActiveRecord::Schema.define(version: 20150917043813) do
     t.datetime "updated_at",                                       null: false
     t.string   "status",            limit: 255, default: "unused"
   end
+
+  add_index "tickets", ["brand_id", "purchase_order_id"], name: "index_tickets_on_brand_id_and_purchase_order_id", using: :btree
+  add_index "tickets", ["brand_id"], name: "index_tickets_on_brand_id", using: :btree
+  add_index "tickets", ["purchase_order_id"], name: "index_tickets_on_purchase_order_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 255
