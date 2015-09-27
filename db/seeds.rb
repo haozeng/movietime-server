@@ -63,6 +63,8 @@ if Rails.env.development?
                      first_name: 'hao', last_name: 'zeng')
   user2 = ensure_user(email: 'daceywang@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'yefei', last_name: 'wang')
+  apple_tester = ensure_user(email: 'apple@gmail.com', password: 'appletester', password_confirmation: 'appletester',
+                     first_name: 'apple', last_name: 'store')
 
   # Generate 20 tickets for each brand
   Ticket.destroy_all
