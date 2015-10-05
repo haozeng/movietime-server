@@ -4,7 +4,7 @@ describe BrandsController do
   render_views
 
   before do
-    create_list :brand, 3
+    create_list :brand, 3, :available
   end
 
   context "#index" do
@@ -12,6 +12,13 @@ describe BrandsController do
       get :index, format: :json
       expect(response.status).to eql(200)
       expect(JSON.parse(response.body)['brands'].size).to eql(3)
+    end
+
+    it "return the available ones" do
+      Brand.last.update_attributes(status: false)
+      get :index, format: :json
+      expect(response.status).to eql(200)
+      expect(JSON.parse(response.body)['brands'].size).to eql(2)
     end
   end
 

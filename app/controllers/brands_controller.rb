@@ -4,7 +4,7 @@ class BrandsController < ApplicationController
   skip_load_and_authorize_resource
 
   def index
-    @brands = Brand.all
+    @brands = Brand.available.all
 
     respond_with @brands
   end
