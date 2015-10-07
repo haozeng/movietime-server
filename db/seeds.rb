@@ -39,7 +39,7 @@ if Rails.env.development?
                           "Valid seven days a week.\n• "\
                           "Please visit amctheatres.com for additional information.",
                      redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.\n\n"\
-                                          "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
+                                          "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true)
 
   regal = ensure_brand(name: 'regal', original_price: 13, price: 9.9, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket',
                        tos: "• Premiere Tickets must be redeemed at the theatre box office.\n• "\
@@ -47,7 +47,7 @@ if Rails.env.development?
                             "Premiere tickets have surcharge fees for all IMAX, Large Format, RPX or 3-D Films. Location surcharge fees may also be applied at select theatres.\n• "\
                             "Regal Entertainment Group reserves the right to change any upgrade, surcharge or location surcharge fee without notice.",
                        redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique QRCode valid for ONE ENTRY ONLY.\n\n"\
-                                            "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
+                                            "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true)
 
   cinemark = ensure_brand(name: 'cinemark', original_price: 13, price: 9.9, logo: File.open(Rails.root.join('spec', 'pictures', 'cinemark.png'), 'r'), description: 'Available at any Cinemark Theatre nationwide.', title: 'Cinemark Platinum E-Ticket',
                           tos: "• Each card is valid for one box office admission.\n• "\
@@ -57,7 +57,7 @@ if Rails.env.development?
                                "Not redeemable or exchangeable for cash except where required by law.\n• "\
                                "Tickets have surcharge fees for IMAX, Large Format or 3-D Films.",
                           redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.\n\n"\
-                                               "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.")
+                                               "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true)
 
   user = ensure_user(email: 'hzeng1989@gmail.com', password: '123456', password_confirmation: '123456',
                      first_name: 'hao', last_name: 'zeng')
