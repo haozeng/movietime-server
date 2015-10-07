@@ -54,7 +54,8 @@ describe RegistrationsController do
   context "#oauth" do
     context "#facebook" do
       before do
-        create :user, uid: 'facebook_uid', email: 'facebook@gmail.com'
+        user = User.new(uid: 'facebook_uid', email: 'facebook@gmail.com', password: nil, password_confirmation: nil)
+        user.save(:validate => false)
       end
 
       it 'should be able to create a user from facebook oauth info' do
@@ -65,11 +66,26 @@ describe RegistrationsController do
         expect(User.last.uid).not_to be_nil
       end
 
-      it 'should not require password for the same facebook login user as long as uid matches' do
+      it 'should not require password for the same facebook login user as long as email matches' do
         post :oauth, user: { uid: 'facebook_uid', email: 'facebook@gmail.com' }
         expect(response.status).to eql(200)
         result = JSON.parse(response.body)
         expect(result['access_token']).not_to be_nil
+      end
+
+      it 'should allow access for regular access if it was usig facebook login' do
+        post :oauth, user: { email: 'facebook@gmail.com', password: '123456' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+        expect(User.last.valid_password?('123456')).to be true
+      end
+
+      it 'should render error message if password is not in right format for regular access if it was usig facebook login' do
+        post :oauth, user: { email: 'facebook@gmail.com', password: '1234' }
+        expect(response.status).to eql(422)
+        result = JSON.parse(response.body)
+        expect(result["errors"][0]).to match(/Password is too short/)
       end
     end
 
