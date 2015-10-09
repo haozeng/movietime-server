@@ -75,17 +75,9 @@ describe RegistrationsController do
 
       it 'should allow access for regular access if it was usig facebook login' do
         post :oauth, user: { email: 'facebook@gmail.com', password: '123456' }
-        expect(response.status).to eql(200)
-        result = JSON.parse(response.body)
-        expect(result['access_token']).not_to be_nil
-        expect(User.last.valid_password?('123456')).to be true
-      end
-
-      it 'should render error message if password is not in right format for regular access if it was usig facebook login' do
-        post :oauth, user: { email: 'facebook@gmail.com', password: '1234' }
         expect(response.status).to eql(422)
         result = JSON.parse(response.body)
-        expect(result["errors"][0]).to match(/Password is too short/)
+        expect(result["errors"]).to match(/Please use your facebook account to login./)
       end
     end
 

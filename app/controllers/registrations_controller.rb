@@ -42,12 +42,12 @@ class RegistrationsController < ApplicationController
         render json: { errors: 'The email does not exist in our system.' }, status: 422 and return
       end
 
-      if user.uid && user.encrypted_password.blank?
-        # user is using facebook login in the past, and switch to regular user login
-        unless user.update_attributes(sign_up_params)
-          render json: { errors: user.errors.full_messages }, status: 422 and return
-        end
-      elsif !user.valid_password?(sign_up_params[:password])
+      # user is using facebook login in the past, and will have to use facebook login ever since
+      if user.uid
+        render json: { errors: 'Please use your facebook account to login.' }, status: 422 and return
+      end
+
+      unless user.valid_password?(sign_up_params[:password])
         render json: { errors: 'The password you entered is not correct.' }, status: 422 and return
       end
     else # Facebook sign up/sign in
