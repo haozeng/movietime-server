@@ -60,9 +60,11 @@ class RegistrationsController < ApplicationController
           user.save
         end
       else
-        # We set a temperary password for user if user is using facebook to sign in/sign up
-        sign_up_params[:password] = rand.to_s[2..11]
         user = User.new(sign_up_params)
+        # We set a temperary password for user if user is using facebook to sign in/sign up
+        temperary_password = rand.to_s[2..11]
+        user.password = temperary_password
+        user.password_confirmation = temperary_password
         user.save(:validate => false)
       end
     end

@@ -64,7 +64,7 @@ describe RegistrationsController do
         result = JSON.parse(response.body)
         expect(result['access_token']).not_to be_nil
         expect(User.last.uid).not_to be_nil
-        expect(User.last.encrypted_password).not_to be_nil
+        expect(User.last.encrypted_password).not_to eql("")
       end
 
       it 'should not require password for the same facebook login user as long as email matches' do
