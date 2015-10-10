@@ -64,6 +64,7 @@ describe RegistrationsController do
         result = JSON.parse(response.body)
         expect(result['access_token']).not_to be_nil
         expect(User.last.uid).not_to be_nil
+        expect(User.last.encrypted_password).not_to be_nil
       end
 
       it 'should not require password for the same facebook login user as long as email matches' do
@@ -73,11 +74,11 @@ describe RegistrationsController do
         expect(result['access_token']).not_to be_nil
       end
 
-      it 'should allow access for regular access if it was usig facebook login' do
+      it 'should ask the user to reset the password if it was usig regular login' do
         post :oauth, user: { email: 'facebook@gmail.com', password: '123456' }
         expect(response.status).to eql(422)
         result = JSON.parse(response.body)
-        expect(result["errors"]).to match(/Please use your facebook account to login./)
+        expect(result["errors"]).to match(/It looks like you already have an account with us. If you forget your password, please reset your password./)
       end
     end
 

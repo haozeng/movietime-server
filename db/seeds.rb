@@ -39,7 +39,7 @@ if Rails.env.development?
                           "Valid seven days a week.\n• "\
                           "Please visit amctheatres.com for additional information.",
                      redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.\n\n"\
-                                          "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true)
+                                          "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true, cashier_code: 'X2 800')
 
   regal = ensure_brand(name: 'regal', original_price: 13, price: 9.9, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket',
                        tos: "• Premiere Tickets must be redeemed at the theatre box office.\n• "\

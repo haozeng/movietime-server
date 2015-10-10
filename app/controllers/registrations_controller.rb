@@ -37,14 +37,15 @@ class RegistrationsController < ApplicationController
   def oauth
     user = User.where(sign_up_params.slice(:email)).first
 
+    # Non-facebook sign up/sign in
     if sign_up_params[:uid].blank?
       unless user
         render json: { errors: 'The email does not exist in our system.' }, status: 422 and return
       end
 
       # user is using facebook login in the past, and will have to use facebook login ever since
-      if user.uid
-        render json: { errors: 'Please use your facebook account to login.' }, status: 422 and return
+      if user.uid && !user.valid_password?(sign_up_params[:password])
+        render json: { errors: 'It looks like you already have an account with us. If you forget your password, please reset your password.' }, status: 422 and return
       end
 
       unless user.valid_password?(sign_up_params[:password])
@@ -59,6 +60,8 @@ class RegistrationsController < ApplicationController
           user.save
         end
       else
+        # We set a temperary password for user if user is using facebook to sign in/sign up
+        sign_up_params[:password] = rand.to_s[2..11]
         user = User.new(sign_up_params)
         user.save(:validate => false)
       end

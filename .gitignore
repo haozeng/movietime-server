@@ -27,3 +27,4 @@ server.csr
 server.key
 combined.crt
 server.pass.key
+doc.text

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005173642) do
+ActiveRecord::Schema.define(version: 20151010043137) do
 
   create_table "brands", force: :cascade do |t|
     t.string   "name",                limit: 255
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20151005173642) do
     t.text     "tos",                 limit: 65535
     t.text     "redeem_instructions", limit: 65535
     t.boolean  "status",                            default: false
+    t.string   "cashier_code",        limit: 255
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
