@@ -55,6 +55,25 @@ describe PurchaseOrdersController do
     end
   end
 
+  context "#purchase_order_index" do
+    before do
+      purchase_order = create :purchase_order, user: user
+      tickets = create_list :ticket, 4, purchase_order: purchase_order
+      @one = tickets[0]
+
+      purchase_order_two = create :purchase_order, user: user, created_at: 1.day.ago
+      @two = create :ticket, purchase_order: purchase_order_two
+    end
+
+    it 'should return a list of purchase_orders for user' do
+      get :purchase_orders_index, format: :json
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['purchase_orders'].count).to eql(2)
+      expect(result['purchase_orders'][0]['tickets'].count).to eql(4)
+    end
+  end
+
   context "#create" do
     context "successful transaction" do
       before do
