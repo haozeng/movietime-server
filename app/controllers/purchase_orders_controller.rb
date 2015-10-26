@@ -7,6 +7,12 @@ class PurchaseOrdersController < ApplicationController
     respond_with @tickets
   end
 
+  def purchase_orders_index
+    @purchase_orders = PurchaseOrder.where(user_id: current_user.id).includes(:tickets).order('purchase_orders.created_at DESC')
+
+    respond_with @purchase_orders
+  end
+
   def create
     @purchase_order = current_user.purchase_orders.new
 
