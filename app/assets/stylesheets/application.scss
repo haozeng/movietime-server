@@ -69,3 +69,11 @@
     font-size: 20px;
   }
 }
+
+.app-store {
+  display: inline-block;
+  height: 58px;
+  width: 170px;
+  background-image: url(image-path('app-icon.png'));
+  text-align: center;
+}
