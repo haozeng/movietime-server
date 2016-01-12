@@ -10,6 +10,11 @@ class PurchaseOrder < ActiveRecord::Base
     brand_id = params[:brand_id]
     price = number_of_tickets * Brand.find(brand_id).price
 
+    unless enough_tickets?(brand_id, params[:number_of_tickets])
+      self.errors.add(:base, "We are experiencing ticketing issue. You card wasn't charged. Please try again later.")
+      return false
+    end
+
     begin
       stripe_user_id = PaymentProfile.find(payment_profile_id).stripe_user_id
       charge = Stripe::Charge.create(
@@ -43,5 +48,9 @@ class PurchaseOrder < ActiveRecord::Base
         raise 'Please load tickets into the database'
       end
     end
+  end
+
+  def enough_tickets?(brand_id, number_of_tickets)
+    Ticket.where(brand_id: brand_id, purchase_order_id: nil).size >= number_of_tickets
   end
 end

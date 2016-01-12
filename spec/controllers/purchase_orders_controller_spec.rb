@@ -94,16 +94,34 @@ describe PurchaseOrdersController do
 
     context "unsucessfuly transaction" do
       before do
-        allow(Stripe::Charge).to receive(:create).and_raise(Stripe::CardError.new('Your card is declined', {},'card_declined'))
+        allow(Stripe::Charge).to receive(:create).and_raise(Stripe::CardError.new('Your card is declined', {}, 'card_declined'))
+        create_list :ticket, 2, brand_id: brand.id
       end
 
       it 'if purchase is declined, respond with error message and purchase order should not be saved' do
         post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
                                         number_of_tickets: 2 }, format: :json
+
         expect(response.status).to eql(422)
         expect(user.purchase_orders.count).to eql(0)
         result = JSON.parse(response.body)
         expect(result["errors"][0]).to match(/Your card is declined/)
+      end
+    end
+
+    context "tickets running out" do
+      before do
+        Ticket.destroy_all
+      end
+
+      it 'if tickets are running out, respond with error message and purchase order should not be saved' do
+        post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
+                                        number_of_tickets: 1 }, format: :json
+
+        expect(response.status).to eql(422)
+        expect(user.purchase_orders.count).to eql(0)
+        result = JSON.parse(response.body)
+        expect(result["errors"][0]).to match(/We are experiencing ticketing issue. You card wasn't charged. Please try again later./)
       end
     end
   end
