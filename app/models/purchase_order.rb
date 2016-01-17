@@ -51,6 +51,6 @@ class PurchaseOrder < ActiveRecord::Base
   end
 
   def enough_tickets?(brand_id, number_of_tickets)
-    Ticket.where(brand_id: brand_id, purchase_order_id: nil).size >= number_of_tickets
+    Ticket.where(brand_id: brand_id, purchase_order_id: nil).size >= number_of_tickets.to_i
   end
 end

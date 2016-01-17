@@ -116,7 +116,7 @@ describe PurchaseOrdersController do
 
       it 'if tickets are running out, respond with error message and purchase order should not be saved' do
         post :create, purchase_order: { brand_id: brand.id, payment_profile_id: payment_profile.id,
-                                        number_of_tickets: 1 }, format: :json
+                                        number_of_tickets: '1' }, format: :json
 
         expect(response.status).to eql(422)
         expect(user.purchase_orders.count).to eql(0)
