@@ -34,6 +34,32 @@ describe RegistrationsController do
       result = JSON.parse(response.body)
       expect(result['access_token']).not_to be_nil
     end
+
+    it 'sign up with the previous ios_id' do
+      user = User.new(ios_id: 'ios_id')
+      user.save(:validate => false)
+
+      post :create, user: { ios_id: 'ios_id', email: 'user@gmail.com', password: '12345678', password_confirmation: '12345678' },
+           format: :json
+
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['access_token']).not_to be_nil
+      expect(User.count).to eql(1)
+      expect(User.last.email).to eql('user@gmail.com') 
+    end
+  end
+
+  context "#temp" do
+    it 'should create a new user with ios_id, and returns an access_token' do
+      post :temp, user: { ios_id: 'ios_id' },
+           format: :json
+
+      expect(response.status).to eql(200)
+      result = JSON.parse(response.body)
+      expect(result['access_token']).not_to be_nil
+      expect(result['user_id']).not_to be_nil
+    end
   end
 
   context "#update" do
@@ -80,6 +106,29 @@ describe RegistrationsController do
         result = JSON.parse(response.body)
         expect(result["errors"]).to match(/It looks like you already have an account with us. If you forget your password, please reset your password./)
       end
+
+      it 'sign up with facebook with previous ios_id' do
+        user = User.new(ios_id: 'ios_id')
+        user.save(:validate => false)
+
+        post :oauth, user: { uid: '1234567', email: 'test@gmail.com', ios_id: 'ios_id' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+        expect(User.last.uid).not_to be_nil
+        expect(User.last.encrypted_password).not_to eql("")
+      end
+
+      it 'sign in if the previous sign up was using ios_id with facebook uid too' do
+        user = User.new(uid: 'facebook_uid', email: 'facebook2@gmail.com', password: nil, password_confirmation: nil,
+                        ios_id: 'ios_id')
+        user.save(:validate => false)
+
+        post :oauth, user: { uid: 'facebook_uid', email: 'facebook2@gmail.com' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
+      end
     end
 
     context "#regular user" do
@@ -110,6 +159,15 @@ describe RegistrationsController do
         result = JSON.parse(response.body)
         expect(result['access_token']).not_to be_nil
         expect(User.last.uid).not_to be_nil
+      end
+
+      it 'sign in if the previous sign up was using ios_id' do
+        create :user, email: 'regular-ios@gmail.com', password: '123456', ios_id: 'ios_id'
+
+        post :oauth, user: { email: 'regular-ios@gmail.com', password: '123456' }
+        expect(response.status).to eql(200)
+        result = JSON.parse(response.body)
+        expect(result['access_token']).not_to be_nil
       end
     end
   end

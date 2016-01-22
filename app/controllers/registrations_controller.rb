@@ -4,10 +4,10 @@ class RegistrationsController < ApplicationController
   skip_load_and_authorize_resource
 
   def create
-    user = User.find_by_email(sign_up_params[:email])
+    user = User.find_by_email(sign_up_params[:email]) || (User.find_by_ios_id(sign_up_params[:ios_id]) if sign_up_params[:ios_id])
 
     # if user uses facebook in the past
-    if user && user.uid
+    if user && (user.uid || user.ios_id)
       user.attributes = sign_up_params
     else
       user = User.new(sign_up_params)
@@ -24,6 +24,21 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def temp
+    user = User.find_by_ios_id(sign_up_params[:ios_id])
+
+    unless user
+      user = User.new(sign_up_params)
+      user.save(validate: false)
+    end
+
+    token = Doorkeeper::AccessToken.create!(application_id: ENV['APPLICATION_ID'],
+                                            resource_owner_id: user.id,
+                                            expires_in: Doorkeeper.configuration.access_token_expires_in)
+
+    render json: { access_token: token.token, user_id: user.id }
+  end
+
   def update
     user = current_user
 
@@ -35,7 +50,7 @@ class RegistrationsController < ApplicationController
   end
 
   def oauth
-    user = User.where(sign_up_params.slice(:email)).first
+    user = User.where(sign_up_params.slice(:email)).first || (User.find_by_ios_id(sign_up_params[:ios_id]) if sign_up_params[:ios_id])
 
     # Non-facebook sign up/sign in
     if sign_up_params[:uid].blank?
@@ -52,14 +67,21 @@ class RegistrationsController < ApplicationController
         render json: { errors: 'The password you entered is not correct.' }, status: 422 and return
       end
     else # Facebook sign up/sign in
-      if user
+      if user && user.email
         # Facebook sign up/sign in without uid, we want to save the uid for the user from facebook.
-        # User could be sign in/up from app in the past
+        # User could be sign in/up from the App directly in the past
         if !user.uid
           user.uid = sign_up_params[:uid]
           user.save
         end
-      else
+      elsif user && user.email.nil?
+         # If user's email is nil, that means a tmp user is created in the past with ios_id
+         user.attributes = sign_up_params
+         temperary_password = rand.to_s[2..11]
+         user.password = temperary_password
+         user.password_confirmation = temperary_password
+         user.save(:validate => false)
+      else 
         user = User.new(sign_up_params)
         # We set a temperary password for user if user is using facebook to sign in/sign up
         temperary_password = rand.to_s[2..11]
@@ -78,6 +100,6 @@ class RegistrationsController < ApplicationController
   private
 
   def sign_up_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :uid)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :uid, :ios_id)
   end
 end
