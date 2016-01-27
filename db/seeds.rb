@@ -41,6 +41,16 @@ if Rails.env.development?
                      redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.\n\n"\
                                           "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: true, cashier_code: 'X2 800')
 
+  amc_green = ensure_brand(name: 'amc', original_price: 13, price: 9.9, logo: File.open(Rails.root.join('spec', 'pictures', 'amc-green.png'), 'r'), description: 'Available at any AMC Theatres® location in the United States only.', title: 'AMC Green E-Ticket',
+                           tos: "• The AMC Green Ticket is valid for one admission and redeemable at any AMC, AMC Loews, AMC Showplace, Cineplex Odeon, Magic Johnson and Star Theatres, excluding Canadian theatres.\n• "\
+                                "Programs subject to a surcharge: 3D, IMAX and AMC ETX, alternate content, AMC Dine-In Theatres and premium services.\n• "\
+                                "Locations surcharges may also be applied at select theatres. AMC reserves the right to change any surcharge fee without notice.\n• "\
+                                "Unauthorized reproductions not allowed AMC Green tickets are discount items that are NOT eligible toward earning AMC stubs rewards, either at the time of purchase OR at time of redemption.\n• "\
+                                "Valid seven days a week.\n• "\
+                                "Please visit amctheatres.com for additional information.",
+                           redeem_instructions: "Present this E-Ticket at the theatre box office. This E-Ticket contains a unique barcode valid for ONE ENTRY ONLY.\n\n"\
+                                          "This E-Ticket becomes INVALID once scanned. No Refunds or exchanges. For information regarding this ticket, please contact support@movietime.us.", status: false, cashier_code: 'XG 900')
+
   regal = ensure_brand(name: 'regal', original_price: 13, price: 9.9, logo: File.open(Rails.root.join('spec', 'pictures', 'regal.png'), 'r'), description: 'Available at any Regal Cinemas®, Edwards® Theatres, United Artists Theatres and Hollywood Theaters.', title: 'Regal Premiere E-Ticket',
                        tos: "• Premiere Tickets must be redeemed at the theatre box office.\n• "\
                             "Premiere Tickets are not valid for special events, private screenings or online purchases.\n• "\
@@ -68,7 +78,7 @@ if Rails.env.development?
 
   # Generate 20 tickets for each brand
   Ticket.destroy_all
-  [amc, regal, cinemark].each do |b|
+  [amc, regal, cinemark, amc_green].each do |b|
     20.times { ensure_ticket(b, { code: rand.to_s[2..11] })}
   end
 
